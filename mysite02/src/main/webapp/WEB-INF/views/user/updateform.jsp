@@ -3,8 +3,6 @@
     pageEncoding="UTF-8"%>
 <%
 	UserVo vo = (UserVo)request.getAttribute("vo");
-	String femaleCheck = vo.getGender()=="female"?"checked":"";
-// 다시 updateform으로 redirect / 패스워드 입력 안하면 그냥 수정, 입력하면 다 수정ㄴ
 %>
 <!DOCTYPE html>
 <html>
@@ -34,8 +32,19 @@
 					
 					<fieldset>
 						<legend>성별</legend>
-						<label>여</label> <input type="radio" name="gender" value="female" checked=<%=femaleCheck %>>
-						<label>남</label> <input type="radio" name="gender" value="male">
+						<%
+						if("female".equals(vo.getGender())){
+						%>
+							<label>여</label> <input type="radio" name="gender" value="female" checked="checked">
+							<label>남</label> <input type="radio" name="gender" value="male">
+						<%
+						} else {
+						%>
+							<label>여</label> <input type="radio" name="gender" value="female">
+							<label>남</label> <input type="radio" name="gender" value="male" checked="checked">
+						<%
+						}
+						%>
 					</fieldset>
 					
 					<input type="submit" value="수정하기">
