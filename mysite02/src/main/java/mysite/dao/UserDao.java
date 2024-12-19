@@ -12,6 +12,84 @@ import mysite.vo.GuestbookVo;
 import mysite.vo.UserVo;
 
 public class UserDao {
+	public int updateById(UserVo vo, Long id) {
+		int count =0;
+		
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("update user set name = ?, password = ?, gender = ? where id = ?");				
+		) {
+			// 4. parameter binding
+			pstmt.setString(1, vo.getName());
+			pstmt.setString(2, vo.getPassword());
+			pstmt.setString(3, vo.getGender());
+			pstmt.setLong(4, id);
+			
+			// 5. SQL 실행
+			count = pstmt.executeUpdate(); // 데이터 변경
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} 
+		
+		return count;
+		
+	}
+	
+	public int updateByIdNoPassword(UserVo vo, Long id) {
+		int count =0;
+		
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("update user set name = ?, gender = ? where id = ?");				
+		) {
+			// 4. parameter binding
+			pstmt.setString(1, vo.getName());
+			pstmt.setString(2, vo.getGender());
+			pstmt.setLong(3, id);
+			
+			// 5. SQL 실행
+			count = pstmt.executeUpdate(); // 데이터 변경
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} 
+		
+		return count;
+		
+	}
+	
+	public UserVo findById(Long id) {
+		UserVo vo = null;
+		
+		try (
+				Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("select name, email, gender from user where id=?");	
+		) {
+			
+			pstmt.setLong(1, id);
+			
+			// 5. SQL 실행
+			ResultSet rs=pstmt.executeQuery();
+			
+			// 6. 결과 처리
+			if(rs.next()) {
+				String name = rs.getString(1);
+				String email = rs.getString(2);
+				String gender = rs.getString(3);
+				
+				vo = new UserVo();
+				vo.setId(id);
+				vo.setName(name);
+				vo.setEmail(email);
+				vo.setGender(gender);
+			}
+			
+			rs.close();
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		
+		return vo; // 로그인 실패 시 null 반환
+	}
 	public UserVo findByEmailAndPassword(String email, String password) {
 		UserVo vo = null;
 		
@@ -85,5 +163,6 @@ public class UserDao {
 		
 		return conn;
 	}
+	
 
 }
