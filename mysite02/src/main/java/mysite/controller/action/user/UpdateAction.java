@@ -5,6 +5,7 @@ import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import mysite.controller.ActionServlet.Action;
 import mysite.dao.UserDao;
 import mysite.vo.UserVo;
@@ -20,6 +21,7 @@ public class UpdateAction implements Action {
 		String gender = request.getParameter("gender");
 		
 		UserVo vo = new UserVo();
+		vo.setId(id);
 		vo.setName(name);
 		vo.setEmail(email);
 		vo.setPassword(password);
@@ -31,6 +33,9 @@ public class UpdateAction implements Action {
 		} else {
 			dao.updateByIdNoPassword(vo, id);
 		}
+		
+		HttpSession session = request.getSession(true);
+		session.setAttribute("authUser", vo);
 		
 		response.sendRedirect(request.getContextPath()+"/user?a=updateform");
 

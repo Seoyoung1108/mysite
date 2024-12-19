@@ -35,8 +35,7 @@ public class LoginAction implements Action {
 		
 		// 로그인 처리
 		HttpSession session = request.getSession(true);
-		session.setAttribute("authUser", vo);
-		
+		session.setAttribute("authUser", vo);		
 		
 		response.sendRedirect(request.getContextPath());
 	}
