@@ -6,19 +6,18 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import mysite.controller.ActionServlet.Action;
+import mysite.controller.action.main.MainAction;
+
 import java.io.IOException;
 
 @WebServlet({"/main",""}) // /로 하지 말기 주의
-public class MainServlet extends HttpServlet {
+public class MainServlet extends ActionServlet {
 	private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/main/index.jsp");
-		rd.forward(request, response);
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+	@Override
+	protected Action getAction(String actionName) {
+		return new MainAction();
 	}
 
 }

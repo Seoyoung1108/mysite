@@ -1,24 +1,30 @@
 package mysite.controller;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import mysite.dao.GuestbookDao;
-import mysite.vo.GuestbookVo;
 
-import java.io.IOException;
-import java.util.List;
+import mysite.controller.action.guestbook.AddAction;
+import mysite.controller.action.guestbook.DeleteAction;
+import mysite.controller.action.guestbook.DeleteFormAction;
+import mysite.controller.action.guestbook.ListAction;
+import java.util.Map;
 
 @WebServlet("/guestbook")
-public class GuestbookServlet extends HttpServlet {
+public class GuestbookServlet extends ActionServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private Map<String, Action> mapAction = Map.of(
+			"add", new AddAction(),
+			"deleteform", new DeleteFormAction(),
+			"delete", new DeleteAction());
+	
+	@Override
+	protected Action getAction(String actionName) {
+		return mapAction.getOrDefault(actionName, new ListAction());
+	}
 
+	/*
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
-		
 		String action=request.getParameter("a");
 		
 		if("add".equals(action)) {
@@ -56,5 +62,7 @@ public class GuestbookServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
+	*/
+	
 
 }
