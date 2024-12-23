@@ -9,51 +9,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mysite.vo.BoardVo;
-import mysite.vo.UserVo;
 
 
 public class BoardDao {
-	public int update(UserVo vo) {
-		int result = 0;
-		
-		try (
-			Connection conn = getConnection();
-			PreparedStatement pstmt1 = conn.prepareStatement("update user set name=?, gender=? where id=?");
-			PreparedStatement pstmt2 = conn.prepareStatement("update user set name=?, password=?, gender=? where id=?");
-		) {
-			if("".equals(vo.getPassword())) {
-				pstmt1.setString(1, vo.getName());
-				pstmt1.setString(2, vo.getGender());
-				pstmt1.setLong(3, vo.getId());
-				result = pstmt1.executeUpdate();
-			} else {
-				pstmt2.setString(1, vo.getName());
-				pstmt2.setString(2, vo.getPassword());
-				pstmt2.setString(3, vo.getGender());
-				pstmt2.setLong(4, vo.getId());
-				result = pstmt2.executeUpdate();
-			}
-		} catch (SQLException e) {
-			System.out.println("Error:" + e);
-		}
-		
-		return result;				
-	}
-	
 	public int insert(BoardVo vo) {
 		int count =0;
 		
 		try (
 			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("insert into board values (null, ?, ?, 3, now(), 1,3,2,5)");				
+			PreparedStatement pstmt = conn.prepareStatement("insert into board values (null, ?, ?, 3, now(), (select if(g_no is null, 1, max(g_no)+1) from board as g_no),1,0,?)");				
 		) {
 			// 4. parameter binding
 			pstmt.setString(1, vo.getTitle());
 			pstmt.setString(2, vo.getContents());
-			//pstmt.setLong(3, vo.getHit());
+			pstmt.setLong(3, vo.getUserId());
 			
 			// 5. SQL 실행
 			count = pstmt.executeUpdate(); // 데이터 변경
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} 
+		
+		return count;
+		
+	}
+	
+	public int reply(BoardVo vo) {
+		int count =0;
+		
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt1 = conn.prepareStatement("update board set o_no=o_no+1 where g_no=? and o_no>=?");
+			PreparedStatement pstmt2 = conn.prepareStatement("insert into board values (null, ?, ?, 3, now(), ?,?,?,?)");				
+		) {
+			// 4. parameter binding
+			pstmt1.setLong(1, vo.getGNo());
+			pstmt1.setLong(2, vo.getONo());
+			count = pstmt1.executeUpdate(); // 데이터 변경
+			
+			pstmt2.setString(1, vo.getTitle());
+			pstmt2.setString(2, vo.getContents());
+			pstmt2.setLong(3, vo.getGNo());
+			pstmt2.setLong(4, vo.getONo());
+			pstmt2.setLong(5, vo.getDepth());
+			pstmt2.setLong(6, vo.getUserId());
+			
+			// 5. SQL 실행
+			count = pstmt2.executeUpdate(); // 데이터 변경
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
 		} 
@@ -195,6 +197,8 @@ public class BoardDao {
 		return result;	
 		
 	}
+
+	
 
 	
 }

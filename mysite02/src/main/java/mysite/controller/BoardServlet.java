@@ -4,6 +4,8 @@ import jakarta.servlet.annotation.WebServlet;
 import mysite.controller.action.board.ListAction;
 import mysite.controller.action.board.ModifyAction;
 import mysite.controller.action.board.ModifyFormAction;
+import mysite.controller.action.board.ReplyAction;
+import mysite.controller.action.board.ReplyFormAction;
 import mysite.controller.action.board.ViewAction;
 import mysite.controller.action.board.WriteAction;
 import mysite.controller.action.board.WriteFormAction;
@@ -19,7 +21,9 @@ public class BoardServlet extends ActionServlet {
 			"write", new WriteAction(),
 			"view", new ViewAction(),
 			"modifyform", new ModifyFormAction(),
-			"modify", new ModifyAction());
+			"modify", new ModifyAction(),
+			"replyform", new ReplyFormAction(),
+			"reply", new ReplyAction());
 	
 	/*
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

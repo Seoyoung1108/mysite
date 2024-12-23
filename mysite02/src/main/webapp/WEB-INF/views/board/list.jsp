@@ -34,7 +34,7 @@
 					<c:forEach items="${list }" var="vo" varStatus="status">			
 						<tr>
 							<td>${vo.id }</td>
-							<td style="text-align:left; padding-left:${vo.depth * 20}">
+							<td style="text-align:left; padding-left:${vo.depth * 10}px">
 								<c:if test="${vo.depth!=0 }">
 									<img src="${pageContext.request.contextPath }/assets/images/reply.png">
 								</c:if>
