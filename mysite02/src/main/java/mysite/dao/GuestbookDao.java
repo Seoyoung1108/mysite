@@ -32,6 +32,7 @@ public class GuestbookDao {
 		return count;
 		
 	}
+	
 	public List<GuestbookVo> findAll(){
 		List<GuestbookVo> result = new ArrayList<>();
 		
