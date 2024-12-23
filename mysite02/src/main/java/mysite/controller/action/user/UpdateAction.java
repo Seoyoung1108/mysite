@@ -14,28 +14,21 @@ public class UpdateAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Long id = Long.parseLong(request.getParameter("id"));
+		HttpSession session = request.getSession();
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		
 		String name = request.getParameter("name");
-		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		String gender = request.getParameter("gender");
 		
 		UserVo vo = new UserVo();
-		vo.setId(id);
+		vo.setId(authUser.getId());
 		vo.setName(name);
-		vo.setEmail(email);
 		vo.setPassword(password);
 		vo.setGender(gender);
 		
-		UserDao dao= new UserDao();
-		if(password.length()!=0) {
-			dao.updateById(vo, id);
-		} else {
-			dao.updateByIdNoPassword(vo, id);
-		}
-		
-		HttpSession session = request.getSession(true);
-		session.setAttribute("authUser", vo);
+		new UserDao().update(vo);
+		authUser.setName(name);
 		
 		response.sendRedirect(request.getContextPath()+"/user?a=updateform");
 

@@ -12,49 +12,31 @@ import mysite.vo.GuestbookVo;
 import mysite.vo.UserVo;
 
 public class UserDao {
-	public int updateById(UserVo vo, Long id) {
-		int count =0;
+	public int update(UserVo vo) {
+		int result = 0;
 		
 		try (
 			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("update user set name = ?, password = ?, gender = ? where id = ?");				
+			PreparedStatement pstmt1 = conn.prepareStatement("update user set name=?, gender=? where id=?");
+			PreparedStatement pstmt2 = conn.prepareStatement("update user set name=?, password=?, gender=? where id=?");
 		) {
-			// 4. parameter binding
-			pstmt.setString(1, vo.getName());
-			pstmt.setString(2, vo.getPassword());
-			pstmt.setString(3, vo.getGender());
-			pstmt.setLong(4, id);
-			
-			// 5. SQL 실행
-			count = pstmt.executeUpdate(); // 데이터 변경
+			if("".equals(vo.getPassword())) {
+				pstmt1.setString(1, vo.getName());
+				pstmt1.setString(2, vo.getGender());
+				pstmt1.setLong(3, vo.getId());
+				result = pstmt1.executeUpdate();
+			} else {
+				pstmt2.setString(1, vo.getName());
+				pstmt2.setString(2, vo.getPassword());
+				pstmt2.setString(3, vo.getGender());
+				pstmt2.setLong(4, vo.getId());
+				result = pstmt2.executeUpdate();
+			}
 		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} 
+			System.out.println("Error:" + e);
+		}
 		
-		return count;
-		
-	}
-	
-	public int updateByIdNoPassword(UserVo vo, Long id) {
-		int count =0;
-		
-		try (
-			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("update user set name = ?, gender = ? where id = ?");				
-		) {
-			// 4. parameter binding
-			pstmt.setString(1, vo.getName());
-			pstmt.setString(2, vo.getGender());
-			pstmt.setLong(3, id);
-			
-			// 5. SQL 실행
-			count = pstmt.executeUpdate(); // 데이터 변경
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} 
-		
-		return count;
-		
+		return result;				
 	}
 	
 	public UserVo findById(Long id) {

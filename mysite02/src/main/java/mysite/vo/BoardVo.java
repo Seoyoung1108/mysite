@@ -10,7 +10,14 @@ public class BoardVo {
 	private Long oNo;
 	private Long depth;
 	private Long userId;
+	private String userName;
 	
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 	public Long getId() {
 		return id;
 	}

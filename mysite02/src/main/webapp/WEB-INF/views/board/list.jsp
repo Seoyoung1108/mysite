@@ -1,7 +1,7 @@
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 <%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
-<%@page import="mysite.vo.UserVo"%>
+<%@page import="mysite.vo.BoardVo"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%pageContext.setAttribute("newLine", "\n");%>
@@ -38,12 +38,14 @@
 								<c:if test="${vo.depth!=0 }">
 									<img src="${pageContext.request.contextPath }/assets/images/reply.png">
 								</c:if>
-								<a href="">${vo.title }</a>
+								<a href="${pageContext.request.contextPath }/board?a=view&n=${vo.id}">${vo.title }</a>
 							</td>
-							<td>**이름join</td>
+							<td>${vo.userName }</td>
 							<td>${vo.hit }</td>
 							<td>${vo.regDate }</td>
-							<td><a href="" class="del">삭제</a></td>
+							<c:if test="${authUser.id == vo.userId }">
+								<td><a href="" class="del">삭제</a></td>
+							</c:if>
 						</tr>
 					</c:forEach>
 				</table>

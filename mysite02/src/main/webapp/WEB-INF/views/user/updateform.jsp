@@ -19,13 +19,13 @@
 			<div id="user">
 				<form id="join-form" name="joinForm" method="post" action="${pageContext.request.contextPath }/user">
 					<input type="hidden" name="a" value="update">
-					<input type="hidden" name="id" value="${param.vo.getId }">
+					<input type="hidden" name="id" value="${vo.id }">
 					
 					<label class="block-label" for="name">이름</label>
-					<input id="name" name="name" type="text" value="${param.vo.getName }">
+					<input id="name" name="name" type="text" value="${vo.name }">
 
 					<label class="block-label" for="email">이메일</label>
-					<h4>${param.vo.getEmail }</h4>
+					<h4>${vo.email }</h4>
 					
 					<label class="block-label">패스워드</label>
 					<input name="password" type="password" value="">
@@ -33,7 +33,7 @@
 					<fieldset>
 						<legend>성별</legend>						
 						<c:choose>
-							<c:when test='${param.vo.getGender == "female" }'>
+							<c:when test='${vo.gender == "female" }'>
 								<label>여</label> <input type="radio" name="gender" value="female" checked="checked">
 								<label>남</label> <input type="radio" name="gender" value="male">
 							</c:when>
