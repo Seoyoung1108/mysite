@@ -16,15 +16,15 @@
 		<c:import url="/WEB-INF/views/includes/header.jsp" />
 		<div id="content">
 			<div id="guestbook" class="delete-form">
-				<form method="post" action="/mysite02/guestbook">
+				<form method="post" action="${pageContext.request.contextPath }/board">
 					<input type="hidden" name="a" value="delete">
-					<input type='hidden' name="id" value="${param.id }">
+					<input type="hidden" name="n" value="${vo.id }">
+					<input type="hidden" name = "gNo" value="${vo.getGNo() }">
+					<input type="hidden" name = "oNo" value="${vo.getONo() }">
 					
-					<label>비밀번호</label>
-					<input type="password" name="password">
+					<label>이 글에 달린 답글도 모두 삭제됩니다. 정말 삭제하시겠습니까?</label>
 					<input type="submit" value="확인">
 				</form>
-				<a href="${pageContext.request.contextPath }/guestbook">방명록 리스트</a>
 			</div>
 		</div>
 		<c:import url="/WEB-INF/views/includes/navigation.jsp" />

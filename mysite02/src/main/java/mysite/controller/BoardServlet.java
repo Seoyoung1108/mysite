@@ -1,6 +1,8 @@
 package mysite.controller;
 
 import jakarta.servlet.annotation.WebServlet;
+import mysite.controller.action.board.DeleteAction;
+import mysite.controller.action.board.DeleteFormAction;
 import mysite.controller.action.board.ListAction;
 import mysite.controller.action.board.ModifyAction;
 import mysite.controller.action.board.ModifyFormAction;
@@ -23,7 +25,9 @@ public class BoardServlet extends ActionServlet {
 			"modifyform", new ModifyFormAction(),
 			"modify", new ModifyAction(),
 			"replyform", new ReplyFormAction(),
-			"reply", new ReplyAction());
+			"reply", new ReplyAction(),
+			"deleteform", new DeleteFormAction(),
+			"delete", new DeleteAction());
 	
 	/*
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
