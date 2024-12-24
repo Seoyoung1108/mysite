@@ -17,7 +17,7 @@ public class BoardDao {
 		
 		try (
 			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("insert into board values (null, ?, ?, 3, now(), (select if(g_no is null, 1, max(g_no)+1) from board as g_no),1,0,?)");				
+			PreparedStatement pstmt = conn.prepareStatement("insert into board values (null, ?, ?, 0, now(), (select if(g_no is null, 1, max(g_no)+1) from board as g_no),1,0,?)");				
 		) {
 			// 4. parameter binding
 			pstmt.setString(1, vo.getTitle());
@@ -40,7 +40,7 @@ public class BoardDao {
 		try (
 			Connection conn = getConnection();
 			PreparedStatement pstmt1 = conn.prepareStatement("update board set o_no=o_no+1 where g_no=? and o_no>=?");
-			PreparedStatement pstmt2 = conn.prepareStatement("insert into board values (null, ?, ?, 3, now(), ?,?,?,?)");				
+			PreparedStatement pstmt2 = conn.prepareStatement("insert into board values (null, ?, ?, 0, now(), ?,?,?,?)");				
 		) {
 			// 4. parameter binding
 			pstmt1.setLong(1, vo.getGNo());
@@ -250,7 +250,28 @@ public class BoardDao {
 		return result;	
 		
 	}
+	
+	public int hitUp(BoardVo vo) {
+		int result = 0;
+		
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("update board set hit=? where id=?");
+		) {
 
+				pstmt.setLong(1, vo.getHit());
+				pstmt.setLong(2, vo.getId());
+				
+				result = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("Error:" + e);
+		}
+		
+		return result;	
+		
+	}
+	
 	public int delete(Long id, Long gNo, Long oNo) {
 		int count =0;
 		
@@ -271,6 +292,8 @@ public class BoardDao {
 		return count;
 		
 	}
+
+	
 
 	
 

@@ -57,13 +57,14 @@
 				<!-- pager 추가 -->
 				<div class="pager">
 					<ul>
+						<c:set var="col" value="1" />
 						<li><a href="${pageContext.request.contextPath }/board">◀</a></li>
-						<li><a href="${pageContext.request.contextPath }/board?p=1">1</a></li>
-						<li class="selected"><a href="${pageContext.request.contextPath }/board?p=2">2</a></li>
-						<li><a href="${pageContext.request.contextPath }/board?p=3">3</a></li>
-						<li><a href="${pageContext.request.contextPath }/board?p=4">4</a></li>
-						<li><a href="${pageContext.request.contextPath }/board?p=5">5</a></li>
+						<c:forEach begin="${1+5*(col-1) }" end="${5*col }" step="1" var="i">
+							<li><a href="${pageContext.request.contextPath }/board?p=${i}">${i}</a></li>
+						</c:forEach>
 						<li><a href="">▶</a></li>
+						<!--<li class="selected"><a href="${pageContext.request.contextPath }/board?p=2">2</a></li>-->
+						
 					</ul>
 				</div>					
 				<!-- pager 추가 -->
