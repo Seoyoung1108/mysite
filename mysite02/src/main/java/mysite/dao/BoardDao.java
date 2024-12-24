@@ -78,8 +78,9 @@ public class BoardDao {
 
 			// 5. SQL 실행
 			ResultSet rs=pstmt.executeQuery();
-
+			rs.last();
 			count= rs.getRow();
+
 			// 6. 결과 처리
 			while(rs.next()) {
 				Long id = rs.getLong(1);

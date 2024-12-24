@@ -62,15 +62,24 @@
 						</c:if>
 						<c:forEach begin="${1+5*(col-1) }" end="${5*col }" step="1" var="i">
 							<c:choose>
-								<c:when test='${pick==i }'>
-									<li class="selected"><a href="${pageContext.request.contextPath }/board?p=${i}">${i}</a></li>	
+								<c:when test='${i<=pageCount}'>
+									<c:choose>
+										<c:when test='${pick==i }'>
+											<li class="selected"><a href="${pageContext.request.contextPath }/board?p=${i}">${i}</a></li>	
+										</c:when>
+										<c:otherwise>
+											<li><a href="${pageContext.request.contextPath }/board?p=${i}">${i}</a></li>
+										</c:otherwise>
+									</c:choose>
 								</c:when>
 								<c:otherwise>
-									<li><a href="${pageContext.request.contextPath }/board?p=${i}">${i}</a></li>
+									<li>${i}</li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
-						<li><a href="${pageContext.request.contextPath }/board?p=${5*col+1}">▶</a></li>
+						<c:if test="${pageCount>5*col }">
+							<li><a href="${pageContext.request.contextPath }/board?p=${5*col+1}">▶</a></li>
+						</c:if>
 						<!--<li class="selected"><a href="${pageContext.request.contextPath }/board?p=2">2</a></li>-->
 						
 					</ul>
