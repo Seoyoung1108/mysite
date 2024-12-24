@@ -57,12 +57,12 @@
 				<!-- pager 추가 -->
 				<div class="pager">
 					<ul>
-						<li><a href="">◀</a></li>
-						<li><a href="">1</a></li>
-						<li class="selected">2</li>
-						<li><a href="">3</a></li>
-						<li>4</li>
-						<li>5</li>
+						<li><a href="${pageContext.request.contextPath }/board">◀</a></li>
+						<li><a href="${pageContext.request.contextPath }/board?p=1">1</a></li>
+						<li class="selected"><a href="${pageContext.request.contextPath }/board?p=2">2</a></li>
+						<li><a href="${pageContext.request.contextPath }/board?p=3">3</a></li>
+						<li><a href="${pageContext.request.contextPath }/board?p=4">4</a></li>
+						<li><a href="${pageContext.request.contextPath }/board?p=5">5</a></li>
 						<li><a href="">▶</a></li>
 					</ul>
 				</div>					

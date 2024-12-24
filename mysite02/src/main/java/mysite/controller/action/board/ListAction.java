@@ -2,6 +2,7 @@ package mysite.controller.action.board;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -14,8 +15,12 @@ import mysite.vo.BoardVo;
 public class ListAction implements Action {
 
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<BoardVo> list = new BoardDao().findAll();
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
+		String p = (String)Optional.ofNullable(request.getParameter("p")).orElse("1");
+		int page = Integer.parseInt(p);
+		List<BoardVo> list = new BoardDao().findByPage(page);
+		
+		//List<BoardVo> list = new BoardDao().findAll();
 		request.setAttribute("list", list);
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/board/list.jsp");
 		rd.forward(request, response);
