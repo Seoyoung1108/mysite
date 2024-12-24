@@ -64,8 +64,9 @@ public class BoardDao {
 		
 	}
 	
-	public List<BoardVo> findAll(){
+	public int findAll(){
 		List<BoardVo> result = new ArrayList<>();
+		int count =0;
 		
 		try (
 				Connection conn = getConnection();
@@ -77,7 +78,8 @@ public class BoardDao {
 
 			// 5. SQL 실행
 			ResultSet rs=pstmt.executeQuery();
-			
+
+			count= rs.getRow();
 			// 6. 결과 처리
 			while(rs.next()) {
 				Long id = rs.getLong(1);
@@ -106,12 +108,15 @@ public class BoardDao {
 			}
 			
 			rs.close();
+			
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
 		}
 		
-		return result;
+		return count;
 	}
+	
+
 	
 	public List<BoardVo> findByPage(int page){
 		List<BoardVo> result = new ArrayList<>();
@@ -293,6 +298,7 @@ public class BoardDao {
 		
 	}
 
+	
 	
 
 	

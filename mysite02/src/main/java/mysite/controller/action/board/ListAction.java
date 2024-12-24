@@ -20,6 +20,13 @@ public class ListAction implements Action {
 		int page = Integer.parseInt(p);
 		List<BoardVo> list = new BoardDao().findByPage(page);
 		
+		int count = new BoardDao().findAll();
+		int col= (page-1)/5+1;
+		
+		request.setAttribute("col", col);
+		request.setAttribute("pick", page);
+		request.setAttribute("pageCount", count);
+		
 		//List<BoardVo> list = new BoardDao().findAll();
 		request.setAttribute("list", list);
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/board/list.jsp");

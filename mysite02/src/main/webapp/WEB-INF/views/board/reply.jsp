@@ -57,7 +57,7 @@
 						</tr>
 					</table>
 					<div class="bottom">
-						<a href="${pageContext.request.contextPath }/board">취소</a>
+						<a href="${pageContext.request.contextPath }/board?a=view&n=${vo.id}">취소</a>
 						<input type="submit" value="등록">
 					</div>
 				</form>				

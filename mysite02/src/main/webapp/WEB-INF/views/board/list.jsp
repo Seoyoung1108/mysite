@@ -37,6 +37,7 @@
 							<td style="text-align:left; padding-left:${vo.depth * 10}px">
 								<c:if test="${vo.depth!=0 }">
 									<img src="${pageContext.request.contextPath }/assets/images/reply.png">
+									re)
 								</c:if>
 								<a href="${pageContext.request.contextPath }/board?a=view&n=${vo.id}">${vo.title }</a>
 							</td>
@@ -53,22 +54,27 @@
 				<table class="tbl-ex">
 					
 				</table>
-				
-				<!-- pager 추가 -->
+
 				<div class="pager">
 					<ul>
-						<c:set var="col" value="1" />
-						<li><a href="${pageContext.request.contextPath }/board">◀</a></li>
+						<c:if test="${col!=1 }">
+							<li><a href="${pageContext.request.contextPath }/board?p=${5*(col-1)}">◀</a></li>
+						</c:if>
 						<c:forEach begin="${1+5*(col-1) }" end="${5*col }" step="1" var="i">
-							<li><a href="${pageContext.request.contextPath }/board?p=${i}">${i}</a></li>
+							<c:choose>
+								<c:when test='${pick==i }'>
+									<li class="selected"><a href="${pageContext.request.contextPath }/board?p=${i}">${i}</a></li>	
+								</c:when>
+								<c:otherwise>
+									<li><a href="${pageContext.request.contextPath }/board?p=${i}">${i}</a></li>
+								</c:otherwise>
+							</c:choose>
 						</c:forEach>
-						<li><a href="">▶</a></li>
+						<li><a href="${pageContext.request.contextPath }/board?p=${5*col+1}">▶</a></li>
 						<!--<li class="selected"><a href="${pageContext.request.contextPath }/board?p=2">2</a></li>-->
 						
 					</ul>
 				</div>					
-				<!-- pager 추가 -->
-				
 				<c:if test="${authUser!=null }">
 					<div class="bottom">
 					<a href="${pageContext.request.contextPath }/board?a=writeform" id="new-book">글쓰기</a>
