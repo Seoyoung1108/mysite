@@ -79,9 +79,7 @@
 						</c:forEach>
 						<c:if test="${pageCount>5*col }">
 							<li><a href="${pageContext.request.contextPath }/board?p=${5*col+1}">▶</a></li>
-						</c:if>
-						<!--<li class="selected"><a href="${pageContext.request.contextPath }/board?p=2">2</a></li>-->
-						
+						</c:if>					
 					</ul>
 				</div>					
 				<c:if test="${authUser!=null }">
