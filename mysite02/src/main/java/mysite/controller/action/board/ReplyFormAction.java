@@ -6,14 +6,28 @@ import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import mysite.controller.ActionServlet.Action;
 import mysite.dao.BoardDao;
 import mysite.vo.BoardVo;
+import mysite.vo.UserVo;
 
 public class ReplyFormAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		if(session==null) {
+			response.sendRedirect(request.getContextPath());
+			return;
+		}
+		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		if(authUser==null) {
+			response.sendRedirect(request.getContextPath());
+			return;
+		}
+		
 		Long parentId = Long.parseLong(request.getParameter("n"));
 		
 		BoardVo vo = new BoardDao().findById(parentId);

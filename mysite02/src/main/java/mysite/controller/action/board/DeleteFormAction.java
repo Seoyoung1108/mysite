@@ -33,6 +33,12 @@ public class DeleteFormAction implements Action {
 		BoardVo vo = new BoardDao().findById(id);
 		request.setAttribute("vo", vo);
 		
+		// 다른 사람 접근 제어
+		if(authUser.getId()!=vo.getUserId()) {
+			response.sendRedirect(request.getContextPath());
+			return;
+		}
+		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/board/deleteform.jsp");
 		rd.forward(request, response);
 	}
