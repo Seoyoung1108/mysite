@@ -278,16 +278,15 @@ public class BoardDao {
 		
 	}
 	
-	public int delete(Long id, Long gNo, Long oNo) {
+	public int delete(Long id) {
 		int count =0;
 		
 		try (
 			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("delete from board where g_no=? and o_no>=?");				
+			PreparedStatement pstmt = conn.prepareStatement("delete from board where id=?");				
 		) {
 			// 4. parameter binding
-			pstmt.setLong(1, gNo);
-			pstmt.setLong(2, oNo);
+			pstmt.setLong(1, id);
 			
 			// 5. SQL 실행
 			count = pstmt.executeUpdate(); // 데이터 변경

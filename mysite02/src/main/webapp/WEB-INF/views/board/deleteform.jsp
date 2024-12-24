@@ -19,10 +19,8 @@
 				<form method="post" action="${pageContext.request.contextPath }/board">
 					<input type="hidden" name="a" value="delete">
 					<input type="hidden" name="n" value="${vo.id }">
-					<input type="hidden" name = "gNo" value="${vo.getGNo() }">
-					<input type="hidden" name = "oNo" value="${vo.getONo() }">
 					
-					<label>이 글에 달린 답글도 모두 삭제됩니다. 정말 삭제하시겠습니까?</label>
+					<label>이 글에 달린 답글은 보존됩니다. 정말 삭제하시겠습니까?</label>
 					<input type="submit" value="확인">
 				</form>
 			</div>
