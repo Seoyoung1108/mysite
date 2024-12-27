@@ -72,6 +72,7 @@ public class UserRepository {
 		
 		return vo; // 로그인 실패 시 null 반환
 	}
+	
 	public UserVo findByEmailAndPassword(String email, String password) {
 		UserVo vo = null;
 		

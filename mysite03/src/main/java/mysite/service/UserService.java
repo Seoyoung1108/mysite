@@ -18,8 +18,8 @@ public class UserService {
 		
 	}
 
-	public void login(UserVo vo) {
-		// TODO Auto-generated method stub
-		
+	public UserVo getUser(String email, String password) {
+		UserVo vo = userRepository.findByEmailAndPassword(email,password);
+		return vo;
 	}
 }

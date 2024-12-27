@@ -1,10 +1,12 @@
 package mysite.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpSession;
 import mysite.service.UserService;
 import mysite.vo.UserVo;
 
@@ -39,8 +41,26 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public String login(UserVo vo) {
-		userService.login(vo);
+	public String login(HttpSession session, UserVo vo, Model model) {
+		UserVo authUser = userService.getUser(vo.getEmail(),vo.getPassword()); // 보안 처리는 나중에
+		if(authUser==null) {
+			model.addAttribute("email", vo.getEmail());
+			model.addAttribute("result", "fail");
+			
+			return "user/login";
+		}
+		
+		// login 처리
+		session.setAttribute("authUser", authUser);
+		
+		return "redirect:/";
+	}
+	
+	@RequestMapping("/logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("authUser");
+		session.invalidate();
+		
 		return "redirect:/";
 	}
 }
