@@ -36,8 +36,7 @@
 			</div>
 		
 			<div id="board">
-				<form class="board-form" method="post" action="${pageContext.request.contextPath }/board">
-					<input type = "hidden" name = "a" value="reply">
+				<form class="board-form" method="post" action="${pageContext.request.contextPath }/board/reply/${id}">
 					<input type = "hidden" name = "parentGNo" value="${vo.getGNo() }">
 					<input type = "hidden" name = "prevONo" value="${vo.getONo() }">
 					<input type = "hidden" name = "parentDepth" value="${vo.getDepth() }">
@@ -57,7 +56,7 @@
 						</tr>
 					</table>
 					<div class="bottom">
-						<a href="${pageContext.request.contextPath }/board?a=view&n=${vo.id}">취소</a>
+						<a href="${pageContext.request.contextPath }/board/view/${id}">취소</a>
 						<input type="submit" value="등록">
 					</div>
 				</form>				

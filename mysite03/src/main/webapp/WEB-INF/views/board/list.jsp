@@ -32,20 +32,20 @@
 					<c:set var="count" value="${fn:length(list) }" />
 					<c:forEach items="${list }" var="vo" varStatus="status">			
 						<tr>
-							<td>${vo.id }</td>
+							<td>${vo.id }</td> <!-- ${count-(pick-1)*5-status.index} -->
 							<td style="text-align:left; padding-left:${vo.depth * 10}px">
 								<c:if test="${vo.depth!=0 }">
 									<img src="${pageContext.request.contextPath }/assets/images/reply.png">
 									re)
 								</c:if>
-								<a href="${pageContext.request.contextPath }/board?a=view&n=${vo.id}">${vo.title }</a>
+								<a href="${pageContext.request.contextPath }/board/view/${vo.id}">${vo.title }</a>
 							</td>
 							<td>${vo.userName }</td>
 							<td>${vo.hit }</td>
 							<td>${vo.regDate }</td>
 							<td>
 								<c:if test="${authUser.id == vo.userId }">
-									<a href="${pageContext.request.contextPath }/board?a=deleteform&n=${vo.id}" class="del">삭제</a>
+									<a href="${pageContext.request.contextPath }/board/delete/${vo.id}" class="del">삭제</a>
 								</c:if>
 							</td>
 						</tr>
@@ -55,37 +55,10 @@
 				<table class="tbl-ex">
 					
 				</table>
-
-				<div class="pager">
-					<ul>
-						<c:if test="${col!=1 }">
-							<li><a href="${pageContext.request.contextPath }/board?p=${5*(col-1)}">◀</a></li>
-						</c:if>
-						<c:forEach begin="${1+5*(col-1) }" end="${5*col }" step="1" var="i">
-							<c:choose>
-								<c:when test='${i<=pageCount}'>
-									<c:choose>
-										<c:when test='${pick==i }'>
-											<li class="selected"><a href="${pageContext.request.contextPath }/board?p=${i}">${i}</a></li>	
-										</c:when>
-										<c:otherwise>
-											<li><a href="${pageContext.request.contextPath }/board?p=${i}">${i}</a></li>
-										</c:otherwise>
-									</c:choose>
-								</c:when>
-								<c:otherwise>
-									<li>${i}</li>
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
-						<c:if test="${pageCount>5*col }">
-							<li><a href="${pageContext.request.contextPath }/board?p=${5*col+1}">▶</a></li>
-						</c:if>					
-					</ul>
-				</div>					
+				<!-- 페이징 -->	
 				<c:if test="${authUser!=null }">
 					<div class="bottom">
-						<a href="${pageContext.request.contextPath }/board?a=writeform" id="new-book">글쓰기</a>
+						<a href="${pageContext.request.contextPath }/board/write" id="new-book">글쓰기</a>
 					</div>					
 				</c:if>			
 			</div>

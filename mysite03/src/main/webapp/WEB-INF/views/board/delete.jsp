@@ -16,10 +16,7 @@
 		<c:import url="/WEB-INF/views/includes/header.jsp" />
 		<div id="content">
 			<div id="guestbook" class="delete-form">
-				<form method="post" action="${pageContext.request.contextPath }/board">
-					<input type="hidden" name="a" value="delete">
-					<input type="hidden" name="n" value="${vo.id }">
-					
+				<form method="post" action="${pageContext.request.contextPath }/board/delete/${id}">			
 					<label>이 글에 달린 답글은 보존됩니다. 정말 삭제하시겠습니까?</label>
 					<input type="submit" value="확인">
 				</form>
