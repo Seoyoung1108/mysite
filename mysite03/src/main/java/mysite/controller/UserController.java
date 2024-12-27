@@ -63,5 +63,53 @@ public class UserController {
 		
 		return "redirect:/";
 	}
+	
+	@RequestMapping(value="/update", method=RequestMethod.GET)
+	public String update(HttpSession session, Model model) {
+		// Access Control
+		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		if(authUser==null) {
+			return "redirect:/";
+		}
+		
+		UserVo vo = userService.getUser(authUser.getId());
+		
+		model.addAttribute("vo",vo);
+		return "user/update";
+	}
+	
+	/*
+	@Auth
+	@RequestMapping(value="/update", method=RequestMethod.GET)
+	public String update(@AuthUser UserVo authUser, Model model) {
+		// Access Control
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		if(authUser==null) {
+			return "redirect:/";
+		}
+		
+		UserVo vo = userService.getUser(authUser.getId());
+		
+		model.addAttribute("vo",vo);
+		return "user/update";
+	}
+	*/
+	
+	@RequestMapping(value="/update", method=RequestMethod.POST)
+	public String update(HttpSession session, UserVo vo) {
+		// Access Control
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		if(authUser==null) {
+			return "redirect:/";
+		}
+		
+		vo.setId(authUser.getId());
+		userService.update(vo);
+		
+		authUser.setName(vo.getName());
+		
+		return "redirect:/user/update";
+	}
 }
 

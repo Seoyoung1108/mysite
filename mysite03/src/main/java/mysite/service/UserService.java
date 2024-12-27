@@ -22,4 +22,13 @@ public class UserService {
 		UserVo vo = userRepository.findByEmailAndPassword(email,password);
 		return vo;
 	}
+
+	public UserVo getUser(Long id) {
+		UserVo vo = userRepository.findById(id);
+		return vo;
+	}
+
+	public void update(UserVo vo) {
+		userRepository.update(vo);
+	}
 }
