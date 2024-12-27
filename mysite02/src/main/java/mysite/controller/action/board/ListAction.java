@@ -25,7 +25,8 @@ public class ListAction implements Action {
 		
 		request.setAttribute("col", col);
 		request.setAttribute("pick", page);
-		request.setAttribute("pageCount", count/5+1);
+		request.setAttribute("pageCount", count==0?1:(count-1)/5+1);
+		request.setAttribute("count", count);
 		
 		//List<BoardVo> list = new BoardDao().findAll();
 		request.setAttribute("list", list);

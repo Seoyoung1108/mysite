@@ -29,10 +29,9 @@
 						<th>작성일</th>
 						<th>&nbsp;</th>
 					</tr>				
-					<c:set var="count" value="${fn:length(list) }" />
 					<c:forEach items="${list }" var="vo" varStatus="status">			
 						<tr>
-							<td>${vo.id }</td>
+							<td>${count-(pick-1)*5-status.index}</td>
 							<td style="text-align:left; padding-left:${vo.depth * 10}px">
 								<c:if test="${vo.depth!=0 }">
 									<img src="${pageContext.request.contextPath }/assets/images/reply.png">
