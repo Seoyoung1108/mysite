@@ -6,8 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.stereotype.Repository;
+
 import mysite.vo.UserVo;
 
+@Repository
 public class UserRepository {
 	public int update(UserVo vo) {
 		int result = 0;
