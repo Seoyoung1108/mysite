@@ -16,7 +16,7 @@
 		<c:import url="/WEB-INF/views/includes/header.jsp" />
 		<div id="content">
 			<div id="guestbook" class="delete-form">
-				<form method="post" action="/mysite02/guestbook">
+				<form method="post" action="${pageContext.request.contextPath }/guestbook">
 					<input type="hidden" name="a" value="delete">
 					<input type='hidden' name="id" value="${param.id }">
 					
