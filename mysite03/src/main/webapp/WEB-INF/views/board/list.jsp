@@ -29,10 +29,9 @@
 						<th>작성일</th>
 						<th>&nbsp;</th>
 					</tr>				
-					<c:set var="count" value="${fn:length(list) }" />
 					<c:forEach items="${list }" var="vo" varStatus="status">			
 						<tr>
-							<td>${vo.id }</td> <!-- ${count-(pick-1)*5-status.index} -->
+							<td>${count-(pick-1)*5-status.index}</td>
 							<td style="text-align:left; padding-left:${vo.depth * 10}px">
 								<c:if test="${vo.depth!=0 }">
 									<img src="${pageContext.request.contextPath }/assets/images/reply.png">
@@ -55,7 +54,33 @@
 				<table class="tbl-ex">
 					
 				</table>
-				<!-- 페이징 -->	
+				<div class="pager">
+					<ul>
+						<c:if test="${col!=1 }">
+							<li><a href="${pageContext.request.contextPath }/board/${5*(col-1)}">◀</a></li>
+						</c:if>
+						<c:forEach begin="${1+5*(col-1) }" end="${5*col }" step="1" var="i">
+							<c:choose>
+								<c:when test='${i<=pageCount}'>
+									<c:choose>
+										<c:when test='${pick==i }'>
+											<li class="selected"><a href="${pageContext.request.contextPath }/board/${i}">${i}</a></li>	
+										</c:when>
+										<c:otherwise>
+											<li><a href="${pageContext.request.contextPath }/board/${i}">${i}</a></li>
+										</c:otherwise>
+									</c:choose>
+								</c:when>
+								<c:otherwise>
+									<li>${i}</li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						<c:if test="${pageCount>5*col }">
+							<li><a href="${pageContext.request.contextPath }/board?p=${5*col+1}">▶</a></li>
+						</c:if>					
+					</ul>
+				</div>	
 				<c:if test="${authUser!=null }">
 					<div class="bottom">
 						<a href="${pageContext.request.contextPath }/board/write" id="new-book">글쓰기</a>

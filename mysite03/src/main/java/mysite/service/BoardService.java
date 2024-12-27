@@ -19,9 +19,10 @@ public class BoardService {
 		this.boardRepository=boardRepository;
 	}
 
-	public List<BoardVo> getContentsList() {
-		List<BoardVo> vo = boardRepository.findByPage(1);
-				
+	public List<BoardVo> getContentsList(int currentPage){
+		
+		List<BoardVo> vo = boardRepository.findByPage(currentPage);
+		
 		return vo;
 	}
 
@@ -50,20 +51,8 @@ public class BoardService {
 		boardRepository.reply(vo);		
 	}
 	
-	// getContents(id, userId), updateContents(vo)
-	// deleteContents(id, userId)
-	
-	
-	/*
-	public Map<String,Object> getContentsList(int currentPage, String keyword){
-		
-		//List<BoardVo> list = null;
-		
-		//view의  pagination을 위한 데이터값 계산
-		
-		return null;
+	public int countContents() {
+		return boardRepository.findAll();
 	}
-	*/
-	
-	
+
 }

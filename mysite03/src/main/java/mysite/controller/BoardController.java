@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 import mysite.service.BoardService;
@@ -25,8 +24,29 @@ public class BoardController {
 	
 	@RequestMapping("")
 	public String list(Model model) {	
-		List<BoardVo> list = boardService.getContentsList();
+		List<BoardVo> list = boardService.getContentsList(1);
 		model.addAttribute("list", list);
+		
+		int count = boardService.countContents();
+		int col= (1-1)/5+1;
+		model.addAttribute("col", col);
+		model.addAttribute("pick", 1);
+		model.addAttribute("pageCount", count==0?1:(count-1)/5+1);
+		model.addAttribute("count", count);
+		return "/board/list";
+	}
+	
+	@RequestMapping("/{page}")
+	public String list(@PathVariable("page") int page, Model model) {	
+		List<BoardVo> list = boardService.getContentsList(page);
+		model.addAttribute("list", list);
+		
+		int count = boardService.countContents();
+		int col= (page-1)/5+1;
+		model.addAttribute("col", col);
+		model.addAttribute("pick", page);
+		model.addAttribute("pageCount", count==0?1:(count-1)/5+1);
+		model.addAttribute("count", count);
 		return "/board/list";
 	}
 	
