@@ -40,6 +40,9 @@ public class UserController {
 		return "user/login";
 	}
 	
+	// HttpSession session 있으면 interceptor로
+	
+	/*
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public String login(HttpSession session, UserVo vo, Model model) {
 		UserVo authUser = userService.getUser(vo.getEmail(),vo.getPassword()); // 보안 처리는 나중에
@@ -63,11 +66,11 @@ public class UserController {
 		
 		return "redirect:/";
 	}
+	*/
 	
 	@RequestMapping(value="/update", method=RequestMethod.GET)
 	public String update(HttpSession session, Model model) {
-		// Access Control
-		
+		// Access Control		
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		if(authUser==null) {
 			return "redirect:/";
