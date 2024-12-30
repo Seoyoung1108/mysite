@@ -78,7 +78,7 @@ public class UserRepository {
 		
 		try (
 				Connection conn = getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("select id, name from user where email=? and password=?");	
+				PreparedStatement pstmt = conn.prepareStatement("select id, name, role from user where email=? and password=?");	
 		) {
 			
 			pstmt.setString(1, email);
@@ -91,11 +91,12 @@ public class UserRepository {
 			if(rs.next()) {
 				Long id = rs.getLong(1);
 				String name = rs.getString(2);
+				String role = rs.getString(3);
 				
 				vo = new UserVo();
 				vo.setId(id);
 				vo.setName(name);
-
+				vo.setRole(role);
 			}
 			
 			rs.close();
@@ -111,7 +112,7 @@ public class UserRepository {
 		
 		try (
 			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("insert into user values (null,?,?,?,?,curdate())");				
+			PreparedStatement pstmt = conn.prepareStatement("insert into user values (null,?,?,?,?,curdate(),'USER')");				
 		) {
 			// 4. parameter binding
 			pstmt.setString(1, vo.getName());

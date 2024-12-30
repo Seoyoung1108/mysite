@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
+import mysite.security.Auth;
+import mysite.security.AuthUser;
 import mysite.service.UserService;
 import mysite.vo.UserVo;
 
@@ -66,7 +68,6 @@ public class UserController {
 		
 		return "redirect:/";
 	}
-	*/
 	
 	@RequestMapping(value="/update", method=RequestMethod.GET)
 	public String update(HttpSession session, Model model) {
@@ -82,23 +83,6 @@ public class UserController {
 		return "user/update";
 	}
 	
-	/*
-	@Auth
-	@RequestMapping(value="/update", method=RequestMethod.GET)
-	public String update(@AuthUser UserVo authUser, Model model) {
-		// Access Control
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		if(authUser==null) {
-			return "redirect:/";
-		}
-		
-		UserVo vo = userService.getUser(authUser.getId());
-		
-		model.addAttribute("vo",vo);
-		return "user/update";
-	}
-	*/
-	
 	@RequestMapping(value="/update", method=RequestMethod.POST)
 	public String update(HttpSession session, UserVo vo) {
 		// Access Control
@@ -107,6 +91,27 @@ public class UserController {
 			return "redirect:/";
 		}
 		
+		vo.setId(authUser.getId());
+		userService.update(vo);
+		
+		authUser.setName(vo.getName());
+		
+		return "redirect:/user/update";
+	}
+	*/
+	
+	@Auth
+	@RequestMapping(value="/update", method=RequestMethod.GET)
+	public String update(@AuthUser UserVo authUser, Model model) {		
+		UserVo vo = userService.getUser(authUser.getId());
+		
+		model.addAttribute("vo",vo);
+		return "user/update";
+	}
+	
+	@Auth
+	@RequestMapping(value="/update", method=RequestMethod.POST)
+	public String update(@AuthUser UserVo authUser, UserVo vo) {
 		vo.setId(authUser.getId());
 		userService.update(vo);
 		
