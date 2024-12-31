@@ -6,17 +6,48 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.sql.DataSource;
+
 import org.springframework.stereotype.Repository;
 
 import mysite.vo.UserVo;
 
 @Repository
 public class UserRepository {
+	private DataSource dataSource;
+	
+	public UserRepository(DataSource dataSource) {
+		this.dataSource=dataSource;
+	}
+	
+	public int insert(UserVo vo) {
+		int count = 0;
+		
+		try (
+			Connection conn = dataSource.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("insert into user values (null,?,?,?,?,curdate(),'USER')");				
+		) {
+			// 4. parameter binding
+			pstmt.setString(1, vo.getName());
+			pstmt.setString(2, vo.getEmail());
+			pstmt.setString(3, vo.getPassword());
+			pstmt.setString(4, vo.getGender());
+			
+			// 5. SQL 실행
+			count = pstmt.executeUpdate(); // 데이터 변경
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} 
+		
+		return count;
+		
+	}
+	
 	public int update(UserVo vo) {
 		int result = 0;
 		
 		try (
-			Connection conn = getConnection();
+			Connection conn = dataSource.getConnection();
 			PreparedStatement pstmt1 = conn.prepareStatement("update user set name=?, gender=? where id=?");
 			PreparedStatement pstmt2 = conn.prepareStatement("update user set name=?, password=?, gender=? where id=?");
 		) {
@@ -43,7 +74,7 @@ public class UserRepository {
 		UserVo vo = null;
 		
 		try (
-				Connection conn = getConnection();
+				Connection conn = dataSource.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("select name, email, gender from user where id=?");	
 		) {
 			
@@ -77,7 +108,7 @@ public class UserRepository {
 		UserVo vo = null;
 		
 		try (
-				Connection conn = getConnection();
+				Connection conn = dataSource.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("select id, name, role from user where email=? and password=?");	
 		) {
 			
@@ -105,46 +136,5 @@ public class UserRepository {
 		}
 		
 		return vo; // 로그인 실패 시 null 반환
-	}
-	
-	public int insert(UserVo vo) {
-		int count =0;
-		
-		try (
-			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("insert into user values (null,?,?,?,?,curdate(),'USER')");				
-		) {
-			// 4. parameter binding
-			pstmt.setString(1, vo.getName());
-			pstmt.setString(2, vo.getEmail());
-			pstmt.setString(3, vo.getPassword());
-			pstmt.setString(4, vo.getGender());
-			
-			// 5. SQL 실행
-			count = pstmt.executeUpdate(); // 데이터 변경
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} 
-		
-		return count;
-		
-	}
-	
-	private Connection getConnection() throws SQLException {
-		Connection conn = null;
-		
-		try {
-		// 1. JDBC Driver 로딩
-		Class.forName("org.mariadb.jdbc.Driver");
-		
-		// 2. 연결하기
-		String url = "jdbc:mariadb://192.168.0.153:3306/webdb";
-		conn = DriverManager.getConnection(url, "webdb", "webdb");	
-		
-		} catch (ClassNotFoundException e) {
-			System.out.println("드라이버 로딩 실패:" + e);
-		}
-		
-		return conn;
-	}
+	}	
 }
