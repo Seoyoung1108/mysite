@@ -72,5 +72,10 @@ public class BoardVo {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
-	
+	@Override
+	public String toString() {
+		return "BoardVo [id=" + id + ", title=" + title + ", contents=" + contents + ", hit=" + hit + ", regDate="
+				+ regDate + ", gNo=" + gNo + ", oNo=" + oNo + ", depth=" + depth + ", userId=" + userId + ", userName="
+				+ userName + "]";
+	}
 }

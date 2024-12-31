@@ -2,20 +2,44 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="board">
-	<select id="findAll" resultType="guestbookvo">
+	<insert id="insert" parameterType="boardvo">
 		<![CDATA[
-			select id, name, contents, date_format(reg_date, '%Y-%m-%d %h:%i:%s') as regDate from guestbook order by reg_date desc
+			insert into board values (null, #{title}, #{contents}, 0, now(), (select if(g_no is null, 1, max(g_no)+1) from board as g_no),1,0,#{userId})
 		]]>
-	</select>
-	<insert id="insert" parameterType="guestbookvo">
-		<![CDATA[
-			insert into guestbook values (null,#{name},#{password},#{contents},now())
-		]]>	
 	</insert>
-	<delete id="deleteByIdAndPassword" parameterType="map">
+	<insert id="reply" parameterType="boardvo">
 		<![CDATA[
-			delete from guestbook where id=#{id} and password=#{password}
+			insert into board values (null, #{title}, #{contents}, 0, now(), #{gNo},#{oNo},#{depth},#{userId})
+		]]>
+	</insert>
+	<update id="modify" parameterType="boardvo">
+		<![CDATA[
+			update board set title=#{title}, contents=#{contents} where id=#{id}
+		]]>
+	</update>
+	<update id="hitUp" parameterType="boardvo">
+		<![CDATA[
+			update board set hit=#{hit} where id=#{id}
+		]]>
+	</update>
+	<update id="update" parameterType="boardvo">
+		<![CDATA[
+			update board set o_no=o_no+1 where g_no=#{gNo} and o_no>=#{oNo}
+		]]>
+	</update>
+	<delete id="delete" parameterType="long">
+		<![CDATA[
+			delete from board where id=#{id}
 		]]>
 	</delete>
-
+	<select id="findById" parameterType="long" resultType="boardvo">
+		<![CDATA[
+			select id, title, contents, hit, date_format(reg_date, '%Y-%m-%d %h:%i:%s') as regDate, g_no as gNo, o_no as oNo, depth, user_id as userId from board where id=#{id}
+		]]>
+	</select>
+	<select id="findByPage" parameterType="int" resultType="boardvo">
+		<![CDATA[
+			select b.id as id, b.title as title, b.contents as contents, b.hit as hit, date_format(b.reg_date, '%Y-%m-%d %h:%i:%s') as regDate, b.g_no as gNo, b.o_no as oNo, b.depth as depth, b.user_id as userId, u.name as userName from board as b, user as u where b.user_id = u.id order by g_no desc, o_no asc limit 1, 5
+		]]>
+	</select>
 </mapper>

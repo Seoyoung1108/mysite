@@ -7,63 +7,37 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import javax.sql.DataSource;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import mysite.vo.BoardVo;
 
 @Repository
 public class BoardRepository {
+	@Autowired
+	private DataSource dataSource;
+	private SqlSession sqlSession;
+	
+	public BoardRepository(SqlSession sqlSession) {
+		this.sqlSession=sqlSession;
+	}
+	
 	public int insert(BoardVo vo) {
-		int count =0;
-		
-		try (
-			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("insert into board values (null, ?, ?, 0, now(), (select if(g_no is null, 1, max(g_no)+1) from board as g_no),1,0,?)");				
-		) {
-			// 4. parameter binding
-			pstmt.setString(1, vo.getTitle());
-			pstmt.setString(2, vo.getContents());
-			pstmt.setLong(3, vo.getUserId());
-			
-			// 5. SQL 실행
-			count = pstmt.executeUpdate(); // 데이터 변경
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} 
-		
-		return count;
-		
+		return sqlSession.insert("board.insert", vo);
+	}
+
+	public int update(BoardVo vo) {
+		return sqlSession.update("board.update", vo);
 	}
 	
 	public int reply(BoardVo vo) {
-		int count =0;
-		
-		try (
-			Connection conn = getConnection();
-			PreparedStatement pstmt1 = conn.prepareStatement("update board set o_no=o_no+1 where g_no=? and o_no>=?");
-			PreparedStatement pstmt2 = conn.prepareStatement("insert into board values (null, ?, ?, 0, now(), ?,?,?,?)");				
-		) {
-			// 4. parameter binding
-			pstmt1.setLong(1, vo.getGNo());
-			pstmt1.setLong(2, vo.getONo());
-			count = pstmt1.executeUpdate(); // 데이터 변경
-			
-			pstmt2.setString(1, vo.getTitle());
-			pstmt2.setString(2, vo.getContents());
-			pstmt2.setLong(3, vo.getGNo());
-			pstmt2.setLong(4, vo.getONo());
-			pstmt2.setLong(5, vo.getDepth());
-			pstmt2.setLong(6, vo.getUserId());
-			
-			// 5. SQL 실행
-			count = pstmt2.executeUpdate(); // 데이터 변경
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} 
-		
-		return count;
-		
+		update(vo);
+		return sqlSession.insert("board.reply", vo);
 	}
 	
 	public int findAll(){
@@ -118,8 +92,6 @@ public class BoardRepository {
 		
 		return count;
 	}
-	
-
 	
 	public List<BoardVo> findByPage(int page){
 		List<BoardVo> result = new ArrayList<>();
@@ -193,110 +165,18 @@ public class BoardRepository {
 	}
 
 	public BoardVo findById(Long id) {
-		BoardVo vo = null;
-		
-		try (
-				Connection conn = getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("select id, title, contents, hit, date_format(reg_date, '%Y-%m-%d %h:%i:%s'), g_no, o_no, depth, user_id from board where id=?");	
-		) {
-			
-			pstmt.setLong(1, id);
-			
-			// 5. SQL 실행
-			ResultSet rs=pstmt.executeQuery();
-			
-			// 6. 결과 처리
-			if(rs.next()) {
-				String title = rs.getString(2);
-				String contents = rs.getString(3);
-				Long hit = rs.getLong(4);
-				String regDate = rs.getString(5);
-				Long gNo = rs.getLong(6);
-				Long oNo = rs.getLong(7);
-				Long depth = rs.getLong(8);
-				Long userId = rs.getLong(9);
-				
-				vo = new BoardVo();
-				vo.setId(id);
-				vo.setTitle(title);
-				vo.setContents(contents);
-				vo.setHit(hit);
-				vo.setRegDate(regDate);
-				vo.setGNo(gNo);
-				vo.setONo(oNo);
-				vo.setDepth(depth);
-				vo.setUserId(userId);
-			}
-			
-			rs.close();
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-		
-		return vo;
+		return sqlSession.selectOne("board.findById", id);
 	}
 
 	public int modify(BoardVo vo) {
-		int result = 0;
-		
-		try (
-			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("update board set title=?, contents=? where id=?");
-		) {
-
-				pstmt.setString(1, vo.getTitle());
-				pstmt.setString(2, vo.getContents());
-				pstmt.setLong(3, vo.getId());
-				
-				System.out.println(vo.getTitle()+vo.getContents()+vo.getId());
-				result = pstmt.executeUpdate();
-
-		} catch (SQLException e) {
-			System.out.println("Error:" + e);
-		}
-		
-		return result;	
-		
+		return sqlSession.update("board.modify", vo);
 	}
 	
 	public int hitUp(BoardVo vo) {
-		int result = 0;
-		
-		try (
-			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("update board set hit=? where id=?");
-		) {
-
-				pstmt.setLong(1, vo.getHit());
-				pstmt.setLong(2, vo.getId());
-				
-				result = pstmt.executeUpdate();
-
-		} catch (SQLException e) {
-			System.out.println("Error:" + e);
-		}
-		
-		return result;	
-		
+		return sqlSession.update("board.hitUp", vo);
 	}
 	
 	public int delete(Long id) {
-		int count =0;
-		
-		try (
-			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("delete from board where id=?");				
-		) {
-			// 4. parameter binding
-			pstmt.setLong(1, id);
-			
-			// 5. SQL 실행
-			count = pstmt.executeUpdate(); // 데이터 변경
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} 
-		
-		return count;
-		
+		return sqlSession.delete("board.delete",id);
 	}
 }
