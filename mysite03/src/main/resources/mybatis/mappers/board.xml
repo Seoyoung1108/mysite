@@ -32,6 +32,11 @@
 			delete from board where id=#{id}
 		]]>
 	</delete>
+	<select id="findAll" resultType="boardvo">
+		<![CDATA[
+			select b.id as id, b.title as title, b.contents as contents, b.hit as hit, date_format(b.reg_date, '%Y-%m-%d %h:%i:%s') as regDate, b.g_no as gNo, b.o_no as oNo, b.depth as depth, b.user_id as userId, u.name as userName from board as b, user as u where b.user_id = u.id
+		]]>
+	</select>
 	<select id="findById" parameterType="long" resultType="boardvo">
 		<![CDATA[
 			select id, title, contents, hit, date_format(reg_date, '%Y-%m-%d %h:%i:%s') as regDate, g_no as gNo, o_no as oNo, depth, user_id as userId from board where id=#{id}
@@ -39,7 +44,7 @@
 	</select>
 	<select id="findByPage" parameterType="int" resultType="boardvo">
 		<![CDATA[
-			select b.id as id, b.title as title, b.contents as contents, b.hit as hit, date_format(b.reg_date, '%Y-%m-%d %h:%i:%s') as regDate, b.g_no as gNo, b.o_no as oNo, b.depth as depth, b.user_id as userId, u.name as userName from board as b, user as u where b.user_id = u.id order by g_no desc, o_no asc limit 1, 5
+			select b.id as id, b.title as title, b.contents as contents, b.hit as hit, date_format(b.reg_date, '%Y-%m-%d %h:%i:%s') as regDate, b.g_no as gNo, b.o_no as oNo, b.depth as depth, b.user_id as userId, u.name as userName from board as b, user as u where b.user_id = u.id order by g_no desc, o_no asc limit #{param}, 5
 		]]>
 	</select>
 </mapper>
