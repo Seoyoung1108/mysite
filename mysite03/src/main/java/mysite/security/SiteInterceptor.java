@@ -4,7 +4,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import mysite.service.SiteService;
 import mysite.vo.SiteVo;
 
@@ -19,7 +18,7 @@ public class SiteInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		SiteVo vo = siteService.getSite();
-		request.setAttribute("title", vo.getTitle());
+		request.setAttribute("siteTitle", vo.getTitle());
 		
 		return true;
 	}

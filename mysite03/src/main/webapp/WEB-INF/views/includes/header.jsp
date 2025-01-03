@@ -5,7 +5,7 @@
     pageEncoding="UTF-8"%>
 
 <div id="header">
-	<h1>${title}</h1>
+	<h1>${siteTitle}</h1>
 	<ul>
 		<c:choose>
 			<c:when test='${authUser==null }'>
