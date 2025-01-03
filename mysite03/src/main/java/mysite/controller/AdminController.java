@@ -26,7 +26,9 @@ public class AdminController {
 	}
 	
 	@RequestMapping({"","/main"})
-	public String main() {
+	public String main(Model model) {
+		SiteVo vo = siteService.getSite();
+		model.addAttribute("vo", vo);
 		return "admin/main";
 	}
 
@@ -34,9 +36,11 @@ public class AdminController {
 	public String mainUpdate(@RequestParam("title") String title, @RequestParam("welcomeMessage") String welcome, @RequestParam("description") String description, @RequestParam("file") MultipartFile file) {
 		SiteVo vo = new SiteVo();
 		String url = fileuploadService.restore(file);
+		if(url != null) {
+			vo.setProfile(url);
+		}
 		vo.setTitle(title);
 		vo.setWelcome(welcome);
-		vo.setProfile(url);
 		vo.setDescription(description);
 		
 		siteService.updateSite(vo);

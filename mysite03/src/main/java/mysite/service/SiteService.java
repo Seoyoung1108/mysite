@@ -27,6 +27,6 @@ public class SiteService {
 	}
 	
 	public void updateSite(SiteVo vo) {
-		siteRepository.insert(vo);
+		siteRepository.update(vo);
 	}
 }
