@@ -27,6 +27,7 @@
 	
 	<!-- Interceptors -->
 	<mvc:interceptors>
+		<bean class="mysite.security.SiteInterceptor" />
 		<mvc:interceptor>
 			<mvc:mapping path="/user/auth" />
 			<bean class="mysite.security.LoginInterceptor" />

@@ -38,7 +38,6 @@ public class AdminController {
 		vo.setWelcome(welcome);
 		vo.setProfile(url);
 		vo.setDescription(description);
-		//System.out.println(vo);
 		
 		siteService.updateSite(vo);
 		return "redirect:/admin";
