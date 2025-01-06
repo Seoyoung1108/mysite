@@ -27,7 +27,6 @@
 	
 	<!-- Interceptors -->
 	<mvc:interceptors>
-		<bean class="mysite.security.SiteInterceptor" />
 		<mvc:interceptor>
 			<mvc:mapping path="/user/auth" />
 			<bean class="mysite.security.LoginInterceptor" />
@@ -43,7 +42,31 @@
 			<mvc:exclude-mapping path="/assets/**" />
 			<bean class="mysite.security.AuthInterceptor" />
 		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/assets/**" />
+			<bean class="mysite.interceptor.SiteInterceptor" />
+		</mvc:interceptor>
 	</mvc:interceptors>
+	
+	<!-- Message Source -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+	    <property name="basenames">
+	       <list>
+	          <value>messages/message</value>
+	       </list>
+	    </property>
+	</bean>
+    
+    <!-- Locale Resolver -->
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+    	<constructor-arg index="0" value="lang" />
+    	<property name="cookieHttpOnly" value="false" />
+	</bean>
+	
+	<!-- Multipart Resolver -->
+	<!-- Vo 객체로 받을 수 있음. -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver" />
 	
 	<!-- View Resolver -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
