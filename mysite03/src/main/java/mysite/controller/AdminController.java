@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import mysite.security.Auth;
-import mysite.service.BoardService;
 import mysite.service.FileuploadService;
 import mysite.service.SiteService;
 import mysite.vo.SiteVo;
@@ -33,15 +32,12 @@ public class AdminController {
 	}
 
 	@RequestMapping("/main/update")
-	public String mainUpdate(@RequestParam("title") String title, @RequestParam("welcomeMessage") String welcome, @RequestParam("description") String description, @RequestParam("file") MultipartFile file) {
-		SiteVo vo = new SiteVo();
+	public String mainUpdate(SiteVo vo, @RequestParam("file") MultipartFile file) {
+		System.out.println(vo);
 		String url = fileuploadService.restore(file);
 		if(url != null) {
 			vo.setProfile(url);
 		}
-		vo.setTitle(title);
-		vo.setWelcome(welcome);
-		vo.setDescription(description);
 		
 		siteService.updateSite(vo);
 		return "redirect:/admin";

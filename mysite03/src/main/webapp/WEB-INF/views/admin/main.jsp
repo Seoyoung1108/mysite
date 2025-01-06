@@ -20,7 +20,7 @@
 						<input id="title" name="title" type="text" value="${vo.title }">
 						
 						<label class="block-label" for="welcomeMessage">환영 메세지</label>
-						<input id="welcomeMessage" name="welcomeMessage" type="text" value="${vo.welcome }">
+						<input id="welcomeMessage" name="welcome" type="text" value="${vo.welcome }">
 
 						<label class="block-label">프로필 이미지</label>
 						<img id="profile" src="${pageContext.request.contextPath }${vo.profile }">
@@ -31,9 +31,6 @@
 						
 						<input type="submit" value="변경" />
 					</form>
-									
-				
-
 				</div>
 			</div>
 			<c:import url="/WEB-INF/views/admin/include/navigation.jsp">

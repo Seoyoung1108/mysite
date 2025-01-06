@@ -19,8 +19,7 @@ public class SiteRepository {
 	}
 	
 	public int update(SiteVo vo) {
-			return sqlSession.insert("site.update", vo);
-
+		return sqlSession.update("site.update", vo);
 	}
 
 	public SiteVo findRecent() {
