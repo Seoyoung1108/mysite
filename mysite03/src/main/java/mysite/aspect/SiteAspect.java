@@ -11,7 +11,6 @@ import org.springframework.util.StopWatch;
 public class SiteAspect {
 	@Around("execution(* mysite.repository.*.*(..))")
 	public Object adviceAround(ProceedingJoinPoint pjp) throws Throwable {
-		System.out.println("-- Around Advice: Before --");
 		StopWatch sw = new StopWatch();
 		sw.start();
 		Object result = pjp.proceed();
