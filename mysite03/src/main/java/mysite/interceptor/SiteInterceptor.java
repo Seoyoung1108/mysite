@@ -16,6 +16,7 @@ public class SiteInterceptor implements HandlerInterceptor {
 		this.localeResolver = localeResolver;
 		this.siteService=siteService;
 	}
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
