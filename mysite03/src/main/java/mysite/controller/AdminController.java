@@ -1,12 +1,14 @@
 package mysite.controller;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-
+import jakarta.servlet.ServletContext;
 import mysite.security.Auth;
 import mysite.service.FileuploadService;
 import mysite.service.SiteService;
@@ -16,30 +18,44 @@ import mysite.vo.SiteVo;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-	private SiteService siteService;
-	private FileuploadService fileuploadService;
+	private final FileuploadService fileUploadService;
+	private final SiteService siteService;
+	private final ServletContext servletContext;
+	private final ApplicationContext applicationContext;
 	
-	public AdminController(SiteService siteService, FileuploadService fileuploadService) {
-		this.siteService=siteService;
-		this.fileuploadService=fileuploadService;
+	public AdminController(
+		FileuploadService fileUploadService,
+		SiteService siteService,
+		ServletContext servletContext,
+		ApplicationContext applicationContext) {
+		this.fileUploadService = fileUploadService;
+		this.siteService = siteService;
+		this.servletContext = servletContext;
+		this.applicationContext = applicationContext;
 	}
 	
-	@RequestMapping({"","/main"})
+	@RequestMapping({"", "/main"})
 	public String main(Model model) {
-		SiteVo vo = siteService.getSite();
-		model.addAttribute("vo", vo);
+		model.addAttribute("siteVo", siteService.getSite());
 		return "admin/main";
 	}
-
+	
 	@RequestMapping("/main/update")
-	public String mainUpdate(SiteVo vo, @RequestParam("file") MultipartFile file) {
-		System.out.println(vo);
-		String url = fileuploadService.restore(file);
-		if(url != null) {
-			vo.setProfile(url);
+	public String update(SiteVo siteVo, @RequestParam("file") MultipartFile multipartFile) {
+		String profile = fileUploadService.restore(multipartFile);
+		if(profile != null) {
+			siteVo.setProfile(profile);
 		}
 		
-		siteService.updateSite(vo);
+		siteService.updateSite(siteVo);
+		
+		// update servlet context bean
+		servletContext.setAttribute("siteVo", siteVo);
+		
+		// update application context bean
+		SiteVo site = applicationContext.getBean(SiteVo.class);
+		BeanUtils.copyProperties(siteVo, site);
+		
 		return "redirect:/admin";
 	}
 	

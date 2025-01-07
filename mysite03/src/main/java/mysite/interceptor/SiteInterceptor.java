@@ -20,13 +20,16 @@ public class SiteInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		// site main 저장
+		SiteVo siteVo=(SiteVo)request.getServletContext().getAttribute("siteVo");
+		if(siteVo==null) {
+			siteVo=siteService.getSite();
+			request.getServletContext().setAttribute("siteVo",siteVo);
+		}
+		
 		// locale
 		String lang = localeResolver.resolveLocale(request).getLanguage();
 		request.setAttribute("lang", lang);
-		
-		// title
-		SiteVo vo = siteService.getSite();
-		request.setAttribute("siteTitle", vo.getTitle());
 		
 		return true;
 	}
