@@ -11,6 +11,43 @@
 <title>mysite</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link href="${pageContext.request.contextPath }/assets/css/user.css" rel="stylesheet" type="text/css">
+<script src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.9.0.js"></script>
+<script>
+$(function(){
+	var el = $("#btn-check");
+	el.click(function(){
+		var email = $("#email").val();
+		if(email==""){
+			return;
+		}	
+	
+		$.ajax({
+			url:"${pageContext.request.contextPath }/api/user/checkemail?email="+email,
+			type: "get",
+			dataType: "json",
+			success: function(response){
+				if(response.exist){
+					alert("이메일이 존재합니다. 다른 이메일을 사용해 주세요."); // js는 비동기지만 alert를 쓸 때만 blocking된다.
+					$("#email").val("");
+					$("#email").focus();
+					return;
+				}
+				
+				$("#btn-check").hide();
+				$("#img-check").show();
+				// 쓰는 란 막기
+			},
+			error: function(xhr,status,err){
+				console.error(err);
+			}
+		});
+	
+	});
+});
+
+
+
+</script>
 </head>
 <body>
 	<div id="container">
@@ -31,7 +68,8 @@
 					 <form:errors path="email" />
 					</p>
 					<spring:message code="user.join.label.email.check" var="userEmailCheckText" />
-					<input type="button" value="${userEmailCheckText }">
+					<input id="btn-check" type="button" value="${userEmailCheckText }">
+					<img id="img-check" src="${pageContext.request.contextPath}/assets/images/check.png" style="vertical-align:bottom; width:24px; display:none">
 					
 					<label class="block-label"><spring:message code="user.join.label.password" /></label>
 					<form:password path="password" />

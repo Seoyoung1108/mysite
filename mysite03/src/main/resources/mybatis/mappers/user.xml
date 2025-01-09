@@ -36,4 +36,9 @@
 			select id, name, role from user where email=#{email} and password=#{password}
 		]]>
 	</select>
+	<select id="findByEmail" parameterType="string" resultType="uservo">
+		<![CDATA[
+			select id, name from user where email=#{email}
+		]]>
+	</select>
 </mapper>
