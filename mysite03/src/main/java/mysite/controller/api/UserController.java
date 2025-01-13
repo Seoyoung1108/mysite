@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import mysite.dto.JsonResult;
 import mysite.service.UserService;
 import mysite.vo.UserVo;
 
@@ -24,8 +25,9 @@ public class UserController {
 	// "{ exist:false or true }
 	// @ResponseBody => RestController 사용으로 생략 가능
 	@GetMapping("/checkemail")
-	public Object checkEmail(@RequestParam(value="email", defaultValue="", required=true) String email) {
+	public JsonResult checkEmail(@RequestParam(value="email", defaultValue="", required=true) String email) {
 		UserVo userVo = userService.getUser(email);
-		return Map.of("exist", userVo!=null);		
+		
+		return JsonResult.success(Map.of("exist", userVo!=null));	
 	}	
 }
