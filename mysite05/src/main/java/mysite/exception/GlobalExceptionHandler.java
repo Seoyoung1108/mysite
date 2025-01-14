@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -34,9 +35,9 @@ public class GlobalExceptionHandler {
 		//    html 요청: request header의 accept: application/json (x)
 		String accept = request.getHeader("accept");
 		
+		// 3. JSON 응답
 		if(accept.matches(".*application/json.*")) {
-			// 3. JSON 응답
-			JsonResult jsonResult = JsonResult.fail(errors.toString());
+			JsonResult jsonResult = JsonResult.fail((e instanceof NoHandlerFoundException)? "Unknow API URL":errors.toString());
 			String jsonString = new ObjectMapper().writeValueAsString(jsonResult);
 			
 			response.setStatus(HttpServletResponse.SC_OK);
@@ -45,8 +46,13 @@ public class GlobalExceptionHandler {
 			os.write(jsonString.getBytes("utf-8"));
 			os.close();
 			
+			return;
+		}
+		
+		// 4. HTML 응답: 사과 페이지(종료)
+		if(e instanceof NoHandlerFoundException) {
+			request.getRequestDispatcher("/WEB-INF/views/errors/404.jsp").forward(request, response);
 		} else {
-			// 4. 사과 페이지(종료)
 			request.setAttribute("errors",errors.toString());
 			request.getRequestDispatcher("/WEB-INF/views/errors/exception").forward(request, response);
 		}
