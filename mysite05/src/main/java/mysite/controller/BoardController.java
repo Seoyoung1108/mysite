@@ -2,6 +2,7 @@ package mysite.controller;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,9 +60,9 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/write", method=RequestMethod.GET)
-	public String write(HttpSession session) {
+	public String write(Authentication authentication) {
 		// Access Control
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		UserVo authUser = (UserVo)authentication.getPrincipal();
 		if(authUser==null) {
 			return "redirect:/";
 		}
@@ -69,8 +70,8 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/write", method=RequestMethod.POST)
-	public String write(HttpSession session, BoardVo vo) {
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
+	public String write(Authentication authentication, BoardVo vo) {
+		UserVo authUser = (UserVo)authentication.getPrincipal();
 		
 		vo.setUserId(authUser.getId());
 		boardService.addContents(vo);
@@ -78,9 +79,9 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/reply/{id}", method=RequestMethod.GET)
-	public String reply(HttpSession session, @PathVariable("id") Long id, Model model) {
+	public String reply(Authentication authentication, @PathVariable("id") Long id, Model model) {
 		// Access Control
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		UserVo authUser = (UserVo)authentication.getPrincipal();
 		if(authUser==null) {
 			return "redirect:/";
 		}
@@ -93,9 +94,9 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/reply/{id}", method=RequestMethod.POST)
-	public String reply(HttpSession session, @PathVariable("id") Long id, BoardVo vo) {
+	public String reply(Authentication authentication, @PathVariable("id") Long id, BoardVo vo) {
 		// Access Control
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		UserVo authUser = (UserVo)authentication.getPrincipal();
 		if(authUser==null) {
 			return "redirect:/";
 		}
@@ -111,9 +112,9 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/modify/{id}", method=RequestMethod.GET)
-	public String modify(HttpSession session, @PathVariable("id") Long id, Model model) {
+	public String modify(Authentication authentication, @PathVariable("id") Long id, Model model) {
 		// Access Control
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		UserVo authUser = (UserVo)authentication.getPrincipal();
 		if(authUser==null) {
 			return "redirect:/";
 		}
@@ -125,9 +126,9 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/modify/{id}", method=RequestMethod.POST)
-	public String modify(HttpSession session, @PathVariable("id") Long id, BoardVo vo) {
+	public String modify(Authentication authentication, @PathVariable("id") Long id, BoardVo vo) {
 		// Access Control
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		UserVo authUser = (UserVo)authentication.getPrincipal();
 		if(authUser==null) {
 			return "redirect:/";
 		}
@@ -139,9 +140,9 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
-	public String delete(HttpSession session, @PathVariable("id") Long id, Model model) {
+	public String delete(Authentication authentication, @PathVariable("id") Long id, Model model) {
 		// Access Control
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		UserVo authUser = (UserVo)authentication.getPrincipal();
 		if(authUser==null) {
 			return "redirect:/";
 		}
@@ -151,9 +152,9 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.POST)
-	public String delete(HttpSession session, @PathVariable("id") Long id) {
+	public String delete(Authentication authentication, @PathVariable("id") Long id) {
 		// Access Control
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		UserVo authUser = (UserVo)authentication.getPrincipal();
 		if(authUser==null) {
 			return "redirect:/";
 		}
