@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StopWatch;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import mysite.vo.UserVo;
 
 @Repository
@@ -36,8 +38,9 @@ public class UserRepository {
 	public UserVo findByEmailAndPassword(String email, String password) {
 		return sqlSession.selectOne("user.findByEmailAndPassword", Map.of("email",email,"password",password));
 	}
-
-	public UserVo findByEmail(String email) {
-		return sqlSession.selectOne("user.findByEmail", email);
-	}	
+	
+	public <R> R findByEmail(String email, Class<R> resultType) {
+		Map<String, Object> map = sqlSession.selectOne("user.findByEmail", email);
+		return new ObjectMapper().convertValue(map, resultType);
+	}
 }

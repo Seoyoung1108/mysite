@@ -3,6 +3,7 @@
 <%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <%pageContext.setAttribute("newLine", "\n");%>
 <!DOCTYPE html>
 <html>
@@ -80,12 +81,13 @@
 							<li><a href="${pageContext.request.contextPath }/board?p=${5*col+1}">▶</a></li>
 						</c:if>					
 					</ul>
+				</div>
+				<div class="bottom">
+					<sec:authorize access="isAuthenticated()">
+				    	<sec:authentication property="principal" var="authUser"/>		    
+						<a href="${pageContext.request.contextPath }/board/write" id="new-book">글쓰기</a>							
+					</sec:authorize>
 				</div>	
-				<c:if test="${authUser!=null }">
-					<div class="bottom">
-						<a href="${pageContext.request.contextPath }/board/write" id="new-book">글쓰기</a>
-					</div>					
-				</c:if>			
 			</div>
 		</div>
 		<c:import url="/WEB-INF/views/includes/navigation.jsp" />
