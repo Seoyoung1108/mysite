@@ -7,9 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>500 Internal Server Error</h1>
-	<p>
-		장애가 발생했습니다.
-	</p>
+	<h1>500 Internal Server Error: Custom</h1>
+	<pre style="color:#f00"> <!-- source 그대로 출력 -->
+${errors }
+	</pre>
 </body>
 </html>

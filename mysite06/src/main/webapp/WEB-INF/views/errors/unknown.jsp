@@ -7,9 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>Exception Handler: Spring Controller</h1>
-<pre style="color:#f00"> <!-- source 그대로 출력 -->
-${errors }
-</pre>
+	<h1>Unknown: Custom</h1>
+	<p>
+		??
+	</p>
 </body>
 </html>

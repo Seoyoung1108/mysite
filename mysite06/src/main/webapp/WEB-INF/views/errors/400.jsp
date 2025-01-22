@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>400 Bad Request</h1>
+	<h1>400 Bad Request: Custom</h1>
 	<p>
 		잘못된 요청입니다.
 	</p>

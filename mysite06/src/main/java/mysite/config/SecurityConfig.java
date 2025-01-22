@@ -77,17 +77,18 @@ public class SecurityConfig {
     		.requestMatchers(new RegexRequestMatcher("^/board/?(write|modify|delete|reply)$",null))
     		.hasAnyRole("ADMIN","USER")
     		.anyRequest().permitAll();
-    	})
+    	});
+    	/*
     	.exceptionHandling(exceptionHandling->{
-    		//exceptionHandling.accessDeniedPage("/WEB-INF/views/errors/403.jsp");
+    		//exceptionHandling.accessDeniedPage("/error/403");
     		exceptionHandling.accessDeniedHandler(new AccessDeniedHandler() {
 				@Override
 				public void handle(HttpServletRequest request, HttpServletResponse response,
 						AccessDeniedException accessDeniedException) throws IOException, ServletException {
 					response.sendRedirect(request.getContextPath());			
 				}
-			});
-    	});
+			})
+    	}); */
     	
         return http.build();
     }

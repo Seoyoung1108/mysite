@@ -71,5 +71,4 @@ public class MvcConfig implements WebMvcConfigurer {
 			.excludePathPatterns("/assets/**");
 	}
 	
-	
 }
