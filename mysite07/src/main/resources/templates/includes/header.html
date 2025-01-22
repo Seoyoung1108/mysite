@@ -1,0 +1,44 @@
+<html xmlns:th="http://www.thymeleaf.org"
+ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+ lang="ko">
+<script>
+window.addEventListener("load", function() {
+	anchors = document.querySelectorAll('#languages a');
+	anchors.forEach(function(el) {
+		el.addEventListener("click", function(event) {
+			event.preventDefault();
+			document.cookie =
+				"lang=" + this.getAttribute('data-lang') + ";" +
+				"path=" + "${pageContext.request.contextPath }" + ";" +
+				"max-age=" + (30*24*60*60);
+			
+			location.reload();
+		})	
+	});
+});
+</script>
+<div id="header">
+	<!-- ${siteVo.title} -->
+	<h1>[[${@site.title}]]</h1>
+	<div id="languages">
+		<a href="/" data-lang="ko">KO</a><a href="" class="active" data-lang="en">EN</a>
+		<!-- 
+		<th:block th:switch="${@lang}">
+			<a th:case="en" href="/" data-lang="ko">KO</a><a href="" class="active" data-lang="en">EN</a>
+			<a th:case="ko" href="/" data-lang="ko" class="active">KO</a><a href="" data-lang="en">EN</a>
+		</th:block>
+		 -->
+	</div>
+	<ul>
+		<th:block sec:authorize="isAnonymous()">
+		    <li><a href="/user/login">로그인</a><li>
+		    <li><a href="/user/join">회원가입</a><li>
+		</th:block>
+		<th:block sec:authorize="isAuthenticated()">
+		    <sec:authentication property="principal" var="authUser"/>
+		    <li><a href="${pageContext.request.contextPath}/user/update">회원정보수정</a><li>
+		    <li><a href="${pageContext.request.contextPath}/user/logout">로그아웃</a><li>
+		    <!-- <li><spring:message code="header.gnb.greeting"/> ${authUser.name }</li>  -->
+		</th:block>
+	</ul>
+</div>

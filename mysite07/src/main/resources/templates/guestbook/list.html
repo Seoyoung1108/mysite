@@ -1,0 +1,57 @@
+<!-- <%pageContext.setAttribute("newLine", "\n");%> -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+<title>mysite</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link th:href="@{/assets/css/main.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<div id="container">
+		<th:block th:include="includes/header"></th:block>
+		<div id="content">
+			<div id="guestbook">
+				<form action="${pageContext.request.contextPath }/guestbook/add" method="post">
+					<table>
+						<tr>
+							<td>이름</td>
+							<td><input type="text" name="name"></td>
+							<td>비밀번호</td>
+							<td><input type="password" name="password"></td>
+						</tr>
+						<tr>
+							<td colspan=4><textarea name="contents" id="contents" cols=60 rows=5></textarea></td>
+						</tr>
+						<tr>
+							<td colspan=4 align=right>
+								<input type="submit" VALUE=" 확인 ">
+							</td>
+						</tr>
+					</table>
+				</form>
+				<ul>
+					<li>
+						<table>
+							<tr th:each="vo, status: ${list}">
+								<td th:text="${status.size - status.index}"></td>
+								<td>[[${vo.name }]]</td>
+								<td>[[${vo.regDate }]]</td>
+								<td><a href="${pageContext.request.contextPath }/guestbook/delete/${vo.id }">삭제</a></td>
+							</tr>
+							<tr>
+								<td colspan=4>
+									[[${vo.contents }]]
+									<!-- ${fn:replace(vo.contents, newLine, "<br>") } -->
+								</td>
+							</tr>
+						</table>
+						<br>
+					</li>				
+				</ul>
+			</div>
+		</div>
+		<th:block th:include="includes/navigation"></th:block>
+		<th:block th:include="includes/footer"></th:block>
+	</div>
+</body>
+</html>
