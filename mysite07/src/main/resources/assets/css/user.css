@@ -2,7 +2,7 @@
 @import "mysite.css";
 
 #user		{ margin:20px auto;	width:540px; }
-#userVo	{
+#join-form	{
 	width:250px;
 	padding:10px;
 	border:1px solid #666;

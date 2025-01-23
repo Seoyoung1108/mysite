@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+<title>mysite</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link th:href="@{/assets/css/user.css}" rel="stylesheet" type="text/css">
+<script th:src="@{/assets/js/jquery/jquery-1.9.0.js}"></script>
+<script th:inline="javascript">
+$(function(){
+	var el = $("#btn-check");
+	el.click(function(){
+		var email = $("#email").val();
+		if(email==""){
+			return;
+		}	
+	
+		$.ajax({
+			url: "@{/api/user/checkemail(email=${email})}",
+            type: "get",
+            dataType: "json",
+			success: function(response){
+				console.log(response);
+				if(response.result!="success"){
+					console.error(response.message);
+					return;
+				}
+				
+				if(response.data.exist){
+					alert("이메일이 존재합니다. 다른 이메일을 사용해 주세요."); // js는 비동기지만 alert를 쓸 때만 blocking된다.
+					$("#email").val("");
+					$("#email").focus();
+					return;
+				}
+				
+				$("#btn-check").hide();
+				$("#img-check").show();
+				// 쓰는 란 막기
+			},
+			error: function(xhr,status,err){
+				console.error(err);
+			}
+		});
+	
+	});
+});
+</script>
+</head>
+<body>
+	<div id="container">
+		<th:block th:include="includes/header"></th:block>
+		<div id="content">
+			<div id="user">
+				<form id="join-form" th:object="${userVo}" method="post" th:action="@{/user/join}">					
+					
+					<label class="block-label" for="name" th:text="#{user.join.label.name}"></label>
+					<input type="text" id="name" name="name" th:value="${userVo.name}">
+					<p style="color:#f00" class="error" th:errors="*{name}"></p>
+
+					<label class="block-label" for="email" th:text="#{user.join.label.email}"></label>
+					<input type="text" th:field="*{email}">
+					<p style="color:#f00" class="error" th:errors="*{email}"></p> 
+						
+					<input type="button" th:value="#{user.join.label.email.check}">
+					<img id="img-check" th:src="@{/assets/images/check.png}" style="vertical-align:bottom; width:24px; display:none">
+					
+					<label class="block-label" for="password" th:text="#{user.join.label.password}"></label>
+					<input type="password" th:field="*{password}">
+					<p style="color:#f00" class="error" th:errors="*{password}"></p> 
+					
+					<fieldset>
+						<legend>[[#{user.join.label.gender}]]</legend>
+						<label for="gender-female">[[#{user.join.label.gender.female}]]</label> <input type="radio" id="gender-female" name="gender" value="female" th:checked="*{gender == 'female'}">
+						<label for="gender-male">[[#{user.join.label.gender.male}]]</label> <input type="radio" id="gender-male" name="gender" value="male" th:checked="*{gender == 'male'}">
+					</fieldset>
+					
+					<fieldset>
+						<legend>[[#{user.join.label.terms}]]</legend>
+						<input type="checkbox" th:field="*{agreeProv}" th:value="y" />
+						<label>[[#{user.join.label.terms.message}]]</label>
+					</fieldset>
+					
+					<input type="submit" th:value="#{user.join.button.signup}">
+					
+				</form>
+			</div>
+		</div>
+		<th:block th:include="includes/navigation"></th:block>
+		<th:block th:include="includes/footer"></th:block>
+	</div>
+</body>
+</html>
