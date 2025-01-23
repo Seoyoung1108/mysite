@@ -3,6 +3,7 @@ package mysite.config;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -24,6 +25,7 @@ import mysite.event.ApplicationContextEventListener;
 import mysite.interceptor.SiteInterceptor;
 
 @Configuration
+@ComponentScan({"controller"})
 public class MvcConfig implements WebMvcConfigurer {
 	//Locale Resolver
 	@Bean
@@ -88,7 +90,8 @@ public class MvcConfig implements WebMvcConfigurer {
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setViewClass(JstlView.class);
-		viewResolver.setPrefix("/WEB-INF/views/");
+		viewResolver.setViewNames("views/*"); 
+		viewResolver.setPrefix("/WEB-INF/");
 		viewResolver.setSuffix(".jsp");
 		viewResolver.setExposeContextBeansAsAttributes(true);
 		viewResolver.setExposedContextBeanNames("site");

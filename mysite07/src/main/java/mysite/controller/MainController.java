@@ -33,6 +33,11 @@ public class MainController {
 		return "main/index";
 	}
 	
+	@RequestMapping("/ex")
+	public String ex() {
+		return "example/01";
+	}
+	
 	@ResponseBody
 	@RequestMapping("/msg01")
 	public String message01() {

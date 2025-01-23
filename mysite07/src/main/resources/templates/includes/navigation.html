@@ -2,9 +2,9 @@
 
 <div id="navigation">
 	<ul>
-		<li><a href="${pageContext.request.contextPath }/">홈</a></li>
-		<li><a href="${pageContext.request.contextPath }/guestbook">방명록</a></li>
-		<li><a href="${pageContext.request.contextPath }/board">게시판</a></li>
-		<li><a href="${pageContext.request.contextPath }/gallery">갤러리</a></li>
+		<li><a th:href="@{/}">홈</a></li>
+		<li><a th:href="@{/guestbook}">방명록</a></li>
+		<li><a th:href="@{/board}">게시판</a></li>
+		<li><a th:href="@{/gallery}">갤러리</a></li>
 	</ul>
 </div>
