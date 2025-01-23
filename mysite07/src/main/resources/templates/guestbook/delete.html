@@ -10,7 +10,7 @@
 		<th:block th:include="includes/header"></th:block>
 		<div id="content">
 			<div id="guestbook" class="delete-form">
-				<form method="post" action="@{/guestbook/delete/${no }}">
+				<form method="post" th:action="@{'/guestbook/delete/'+${no }}">
 					<label>비밀번호</label>
 					<input type="password" name="password">
 					<input type="submit" value="확인">

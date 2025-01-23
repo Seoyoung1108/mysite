@@ -11,7 +11,7 @@
 		<th:block th:include="includes/header"></th:block>
 		<div id="content">
 			<div id="guestbook">
-				<form action="${pageContext.request.contextPath }/guestbook/add" method="post">
+				<form th:action="@{/guestbook/add}" method="post">
 					<table>
 						<tr>
 							<td>이름</td>
@@ -36,7 +36,7 @@
 								<td th:text="${status.size - status.index}"></td>
 								<td>[[${vo.name }]]</td>
 								<td>[[${vo.regDate }]]</td>
-								<td><a href="${pageContext.request.contextPath }/guestbook/delete/${vo.id }">삭제</a></td>
+								<td><a th:href="@{'/guestbook/delete/'+${vo.id }}">삭제</a></td>
 							</tr>
 							<tr>
 								<td colspan=4>
