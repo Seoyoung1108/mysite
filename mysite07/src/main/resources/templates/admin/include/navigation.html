@@ -1,0 +1,32 @@
+<div id="navigation">
+	<ul>
+		<th:block th:switch="${menu}">
+			<th:block th:case="main">
+				<li class="selected"><a th:href="@{/admin}">메인페이지 관리</a></li>
+				<li><a th:href="@{/admin/guestbook}">방명록 관리</a></li>
+				<li><a th:href="@{/admin/board}">게시판 관리</a></li>
+				<li><a th:href="@{/admin/user}">사용자 관리</a></li>
+			</th:block>
+			<th:block th:case="guestbook">
+				<li><a th:href="@{/admin}">메인페이지 관리</a></li>
+				<li class="selected"><a th:href="@{/admin/guestbook}">방명록 관리</a></li>
+				<li><a th:href="@{/admin/board}">게시판 관리</a></li>
+				<li><a th:href="@{/admin/user}">사용자 관리</a></li>
+			</th:block>
+			<th:block th:case="board">
+				<li><a th:href="@{/admin}">메인페이지 관리</a></li>
+				<li><a th:href="@{/admin/guestbook}">방명록 관리</a></li>
+				<li class="selected"><a th:href="@{/admin/board}">게시판 관리</a></li>
+				<li><a th:href="@{/admin/user}">사용자 관리</a></li>
+			</th:block>
+			<th:block th:case="user">
+				<li><a th:href="@{/admin}">메인페이지 관리</a></li>
+				<li><a th:href="@{/admin/guestbook}">방명록 관리</a></li>
+				<li><a th:href="@{/admin/board}">게시판 관리</a></li>
+				<li class="selected"><a href="@{/admin/user}">사용자 관리</a></li>
+			</th:block>
+			
+		</th:block>			
+	</ul>
+</div>
+<div id="footer">&nbsp;</div>
