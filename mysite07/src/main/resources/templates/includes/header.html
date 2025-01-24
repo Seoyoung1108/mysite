@@ -37,7 +37,7 @@ window.addEventListener("load", function() {
 		    <sec:authentication property="principal" var="authUser"/>
 		    <li><a th:href="@{/user/update}">회원정보수정</a><li>
 		    <li><a th:href="@{/user/logout}">로그아웃</a><li>
-		    <!-- <li><spring:message code="header.gnb.greeting"/> ${authUser.name }</li>  -->
+		    <li th:text="#{header.gnb.greeting}"> [[${session.authUser.name }]]</li>
 		</th:block>
 	</ul>
 </div>

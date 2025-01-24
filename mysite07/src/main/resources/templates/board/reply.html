@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+<title>mysite</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link th:href="@{/assets/css/board.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<div id="container">
+		<th:block th:include="includes/header"></th:block>
+		<div id="content">
+			<div id="board" class="board-form">
+				<table class="tbl-ex">
+					<tr>
+						<th colspan="2">원글보기</th>
+					</tr>
+					<tr>
+						<td class="label">제목</td>
+						<td>[[${vo.title }]]</td>
+					</tr>
+					<tr>
+						<td class="label">내용</td>
+						<td>
+							<div class="view-content">
+								[[${vo.contents}]]
+								<!-- ${fn:replace(vo.contents, newLine, "<br>") } -->
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		
+			<div id="board">
+				<form class="board-form" method="post" th:action="@{'/board/reply/'+${id}}">
+					<input type = "hidden" name = "parentGNo" th:value="${vo.getGNo() }">
+					<input type = "hidden" name = "prevONo" th:value="${vo.getONo() }">
+					<input type = "hidden" name = "parentDepth" th:value="${vo.getDepth() }">
+					<table class="tbl-ex">
+						<tr>
+							<th colspan="2">답글쓰기</th>
+						</tr>
+						<tr>
+							<td class="label">제목</td>
+							<td><input type="text" name="title" value=""></td>
+						</tr>
+						<tr>
+							<td class="label">내용</td>
+							<td>
+								<textarea id="contents" name="contents"></textarea>
+							</td>
+						</tr>
+					</table>
+					<div class="bottom">
+						<a th:href="@{'/board/view/'+${id}}">취소</a>
+						<input type="submit" value="등록">
+					</div>
+				</form>				
+			</div>
+		</div>
+		<th:block th:include="includes/navigation"></th:block>
+		<th:block th:include="includes/footer"></th:block>
+	</div>
+</body>
+</html>

@@ -34,7 +34,7 @@ public class BoardController {
 		model.addAttribute("pick", 1);
 		model.addAttribute("pageCount", count==0?1:(count-1)/5+1);
 		model.addAttribute("count", count);
-		return "/board/list";
+		return "board/list";
 	}
 	
 	@RequestMapping("/{page}")
@@ -48,7 +48,7 @@ public class BoardController {
 		model.addAttribute("pick", page);
 		model.addAttribute("pageCount", count==0?1:(count-1)/5+1);
 		model.addAttribute("count", count);
-		return "/board/list";
+		return "board/list";
 	}
 	
 	@RequestMapping(value="/view/{id}", method=RequestMethod.GET)
@@ -56,7 +56,7 @@ public class BoardController {
 		BoardVo vo = boardService.getContents(id);
 		model.addAttribute("id", id);
 		model.addAttribute("vo", vo);
-		return "/board/view";
+		return "board/view";
 	}
 	
 	@RequestMapping(value="/write", method=RequestMethod.GET)
@@ -66,7 +66,7 @@ public class BoardController {
 		if(authUser==null) {
 			return "redirect:/";
 		}
-		return "/board/write";
+		return "board/write";
 	}
 	
 	@RequestMapping(value="/write", method=RequestMethod.POST)
@@ -90,7 +90,7 @@ public class BoardController {
 		model.addAttribute("id",id);
 		model.addAttribute("vo",vo);
 		
-		return "/board/reply";
+		return "board/reply";
 	}
 	
 	@RequestMapping(value="/reply/{id}", method=RequestMethod.POST)
@@ -148,7 +148,7 @@ public class BoardController {
 		}
 				
 		model.addAttribute("id", id);
-		return "/board/delete";
+		return "board/delete";
 	}
 	
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.POST)

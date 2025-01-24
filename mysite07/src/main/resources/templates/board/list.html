@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+ xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+ lang="ko">
+<head>
+<title>mysite</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link th:href="@{/assets/css/board.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<div id="container">
+		<th:block th:include="includes/header"></th:block>
+		<div id="content">
+			<div id="board">
+				<form id="search_form" action="" method="post">
+					<input type="text" id="kwd" name="kwd" value="">
+					<input type="submit" value="찾기">
+				</form>
+				<table class="tbl-ex">
+					<tr>
+						<th>번호</th>
+						<th>제목</th>
+						<th>글쓴이</th>
+						<th>조회수</th>
+						<th>작성일</th>
+						<th>&nbsp;</th>
+					</tr>						
+					<tr th:each="vo, status: ${list}">
+						<td th:text="${count-(pick-1)*5-status.index}"></td>
+						<td th:style="'text-align:left; padding-left:' + ${vo.depth * 10} + 'px'">
+							<img th:unless="${vo.depth==0 }" th:src="@{/assets/images/reply.png}">							
+							<a th:href="@{'/board/view/'+${vo.id}}">[[${vo.title }]]</a>
+						</td>
+						<td>[[${vo.userName }]]</td>
+						<td>[[${vo.hit }]]</td>
+						<td>[[${vo.regDate }]]</td>
+						<td>
+							<!-- <a th:if="${authUser.getId()==vo.userId }" th:href="@{'/board/delete/'+${vo.id}}" class="del">삭제</a> -->						
+						</td>
+					</tr>
+				</table>
+				
+				<table class="tbl-ex">
+					
+				</table>
+				<div class="pager">
+					<ul>
+						<li th:if="${col!=1 }"><a th:href="@{'/board/'+${5*(col-1)}}">◀</a></li>
+						
+						<th:block th:each="i : ${#numbers.sequence(1 + 5 * (col - 1), 5 * col)}">
+							<th:block th:if="${i<=pageCount}">
+								<li th:if="${pick==i }" class="selected"><a th:href="@{'/board/'+${i}}" th:text="${i}"></a></li>
+								<li th:unless="${pick==i }"><a th:href="@{'/board/'+${i}}" th:text="${i}"></a></li>
+							</th:block>
+							<th:block th:unless="${i<=pageCount}">
+								<li th:text="${i}"></li>
+							</th:block>		
+						</th:block>
+						<li th:if="${pageCount>5*col }"><a th:href="@{'/board?p='+${5*col+1}}">▶</a></li>				
+					</ul>
+				</div>
+				<div class="bottom">
+					<th:block sec:authorize="isAuthenticated()">
+					    <sec:authentication property="principal" var="authUser"/>
+					    <a th:href="@{/board/write}" id="new-book">글쓰기</a>
+					</th:block>
+				</div>	
+			</div>
+		</div>
+		<th:block th:include="includes/navigation"></th:block>
+		<th:block th:include="includes/footer"></th:block>
+	</div>
+</body>
+</html>

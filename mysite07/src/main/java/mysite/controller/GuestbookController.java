@@ -25,6 +25,7 @@ public class GuestbookController {
 	public String list(Model model) {	
 		List<GuestbookVo> list = guestbookService.getContentsList();
 		model.addAttribute("list", list);
+		model.addAttribute("newLine", "\n");
 		return "guestbook/list";
 	}
 	
