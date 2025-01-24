@@ -1,4 +1,3 @@
-<!-- <%pageContext.setAttribute("newLine", "\n");%> -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
@@ -39,9 +38,7 @@
 								<td><a th:href="@{'/guestbook/delete/'+${vo.id }}">삭제</a></td>
 							</tr>
 							<tr>
-								<td colspan=4 th:text="${#strings.replace(vo.contents, newLine, '<br>')}">
-									<!-- ${fn:replace(vo.contents, newLine, "<br>") } -->
-								</td>
+								<td colspan=4 th:utext="${#strings.replace(vo.contents, newLine, '<br>')}"></td>
 							</tr>
 						</table>
 						<br>

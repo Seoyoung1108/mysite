@@ -56,6 +56,7 @@ public class BoardController {
 		BoardVo vo = boardService.getContents(id);
 		model.addAttribute("id", id);
 		model.addAttribute("vo", vo);
+		model.addAttribute("newLine", "\n");
 		return "board/view";
 	}
 	

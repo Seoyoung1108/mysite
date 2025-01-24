@@ -23,10 +23,7 @@
 					<tr>
 						<td class="label">내용</td>
 						<td>
-							<div class="view-content">
-							[[${vo.contents}]]
-								<!-- ${fn:replace(vo.contents, newLine, "<br>") } -->
-							</div>
+							<div class="view-content" th:utext="${#strings.replace(vo.contents, newLine, '<br>')}"></div>
 						</td>
 					</tr>
 				</table>
