@@ -35,12 +35,8 @@
 					    <sec:authentication property="principal" var="authUser"/>
 					    <a th:href="@{'/board/reply/'+${vo.id}}">답글</a>	
 					</th:block>
-					<a th:href="@{/board}">글목록</a>		
-					<!-- 고치기~ -->
-					<c:if test="${authUser.id == vo.userId }">
-						<a th:href="@{'/board/modify/'+${vo.id}}">글수정</a>
-					</c:if>
-					
+					<a th:href="@{/board}">글목록</a>							
+					<a th:if="${#authentication.principal.id==vo.userId }" th:href="@{'/board/modify/'+${vo.id}}">글수정</a>
 				</div>
 			</div>
 		</div>

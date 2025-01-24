@@ -26,4 +26,15 @@ public class UserDetailsImpl extends UserVo implements UserDetails {
 	public String getPassword() {
 		return super.getPassword();
 	}
+
+	@Override
+	public String getName() {
+		return super.getName();
+	}
+
+	@Override
+	public Long getId() {
+		return super.getId();
+	}
+	
 }

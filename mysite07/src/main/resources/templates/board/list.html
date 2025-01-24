@@ -35,7 +35,7 @@
 						<td>[[${vo.hit }]]</td>
 						<td>[[${vo.regDate }]]</td>
 						<td>
-							<!-- <a th:if="${authUser.getId()==vo.userId }" th:href="@{'/board/delete/'+${vo.id}}" class="del">삭제</a> -->						
+							<a th:if="${#authentication.principal.id==vo.userId }" th:href="@{'/board/delete/'+${vo.id}}" class="del">삭제</a>					
 						</td>
 					</tr>
 				</table>
