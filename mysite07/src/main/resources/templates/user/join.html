@@ -13,8 +13,6 @@ $(function(){
 		if(email==""){
 			return;
 		}
-		
-		//var url = [[@{/api/user/checkemail?email=}]] + email;
 	
 		$.ajax({
 			url: "/api/user/checkemail?email="+email,
@@ -62,7 +60,7 @@ $(function(){
 					<input type="text" th:field="*{email}">
 					<p style="color:#f00" class="error" th:errors="*{email}"></p> 
 						
-					<input type="button" th:value="#{user.join.label.email.check}">
+					<input id="btn-check" type="button" th:value="#{user.join.label.email.check}">
 					<img id="img-check" th:src="@{/assets/images/check.png}" style="vertical-align:bottom; width:24px; display:none">
 					
 					<label class="block-label" for="password" th:text="#{user.join.label.password}"></label>
