@@ -37,56 +37,6 @@ public class MvcConfig implements WebMvcConfigurer {
 		return localeResolver;
 	}
 	
-	// Message Source
-    @Bean
-    public MessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("messages/message");
-        messageSource.setDefaultEncoding("utf-8");
-
-        return messageSource;
-    }
-	
-	// Thymeleaf01: Template Resolver
-    @Bean
-    public SpringResourceTemplateResolver templateResolver(ApplicationContext applicationContext) {
-        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
-
-        templateResolver.setApplicationContext(applicationContext);
-        templateResolver.setPrefix("classpath:templates/");
-        templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode(TemplateMode.HTML);
-        templateResolver.setCharacterEncoding("utf-8");
-        templateResolver.setCacheable(false);
-
-        return templateResolver;
-    }
-
-    // Thymeleaf02: Template Engine
-    @Bean
-    public SpringTemplateEngine templateEngine(ITemplateResolver templateResolver) {
-        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-
-        templateEngine.setTemplateResolver(templateResolver);
-        templateEngine.setEnableSpringELCompiler(true);
-        templateEngine.setTemplateEngineMessageSource(messageSource());
-        templateEngine.addDialect(new SpringSecurityDialect());
-
-        return templateEngine;
-    }
-
-    // Thymeleaf03: View Resolver
-    @Bean
-    public ViewResolver thymeleafViewResolver(ISpringTemplateEngine templateEngine) {
-        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
-
-        viewResolver.setTemplateEngine(templateEngine);
-        viewResolver.setCharacterEncoding("UTF-8");
-        viewResolver.setOrder(1);
-
-        return viewResolver;
-    }
-	
 	// JSP View Resolver
 	@Bean
 	public ViewResolver viewResolver() {

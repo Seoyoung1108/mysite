@@ -25,6 +25,18 @@ spring:
 #      prefix: /WEB-INF/views/
 #      suffix: .jsp
 
+  # thymeleaf
+  thymeleaf:
+    enabled: true
+    prefix: classpath:templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    cache: false
+    spring-el-compiler: true
+    dialects:
+    - org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect
+
   web:
     resources:
       static-locations: [classpath:assets/, file:/mysite-uploads/]
