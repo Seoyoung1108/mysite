@@ -39,8 +39,7 @@
 								<td><a th:href="@{'/guestbook/delete/'+${vo.id }}">삭제</a></td>
 							</tr>
 							<tr>
-								<td colspan=4 th:text="${#strings.replace(vo.contents, newLine, '\n')}">
-									[[${vo.contents }]]
+								<td colspan=4 th:text="${#strings.replace(vo.contents, newLine, '<br>')}">
 									<!-- ${fn:replace(vo.contents, newLine, "<br>") } -->
 								</td>
 							</tr>

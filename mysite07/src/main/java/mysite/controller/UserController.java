@@ -56,76 +56,8 @@ public class UserController {
 		return "user/login";
 	}
 	
-	// HttpSession session 있으면 interceptor로
-	
-	/*
-	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public String login(HttpSession session, UserVo vo, Model model) {
-		UserVo authUser = userService.getUser(vo.getEmail(),vo.getPassword()); // 보안 처리는 나중에
-		if(authUser==null) {
-			model.addAttribute("email", vo.getEmail());
-			model.addAttribute("result", "fail");
-			
-			return "user/login";
-		}
-		
-		// login 처리
-		session.setAttribute("authUser", authUser);
-		
-		return "redirect:/";
-	}
-	
-	@RequestMapping("/logout")
-	public String logout(HttpSession session) {
-		session.removeAttribute("authUser");
-		session.invalidate();
-		
-		return "redirect:/";
-	}
-	
 	@RequestMapping(value="/update", method=RequestMethod.GET)
-	public String update(HttpSession session, Model model) {
-		// Access Control		
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		if(authUser==null) {
-			return "redirect:/";
-		}
-		
-		UserVo vo = userService.getUser(authUser.getId());
-		
-		model.addAttribute("vo",vo);
-		return "user/update";
-	}
-	
-	@RequestMapping(value="/update", method=RequestMethod.POST)
-	public String update(HttpSession session, UserVo vo) {
-		// Access Control
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		if(authUser==null) {
-			return "redirect:/";
-		}
-		
-		vo.setId(authUser.getId());
-		userService.update(vo);
-		
-		authUser.setName(vo.getName());
-		
-		return "redirect:/user/update";
-	}
-	*/
-	
-	@RequestMapping(value="/update", method=RequestMethod.GET)
-	public String update(/*HttpSession session,*/ Authentication authentication, Model model) {
-		// 1. HttpSession을 사용하는 방법
-		//SecurityContext sc = (SecurityContext)session.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
-		//Authentication authentication = sc.getAuthentication();
-		//UserVo authUser = (UserVo)authentication.getPrincipal();
-
-		// 2. SecurityContextHolder(Spring Security ThreadLocal Helper Class)
-		//SecurityContext sc = SecurityContextHolder.getContext();
-		// Authentication authentication = sc.getAuthentication();
-		// UserVo authUser = (UserVo)authentication.getPrincipal();
-		
+	public String update(Authentication authentication, Model model) {	
 		UserVo authUser = (UserVo)authentication.getPrincipal();
 		UserVo vo = userService.getUser(authUser.getId());
 		
